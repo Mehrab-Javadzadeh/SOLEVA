@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Soleva | Product</title>
+    <link rel="stylesheet" href="style.css">192.168.1.8
+    <script src="script.js" defer></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+
+<body>
+    <div class="top-nav">
+        <div class="nav-left">
+            <a href="index.html" style="color: white; text-decoration: none;">
+                <i class="fas fa-arrow-left"></i>
+            </a>
+        </div>
+        <div class="nav-center">
+            <img src="images/logo.png.jpg" class="logo" alt="Soleva Logo">
+        </div>
+        <div class="nav-right">
+            <i class="fas fa-user" id="userIcon"></i>
+            <i class="fas fa-shopping-bag" id="cartIcon"></i>
+            <i class="fas fa-bars"></i>
+        </div>
+    </div>
+
+    <div id="productContainer" style="margin-top: 90px; padding: 20px; min-height: 400px;">
+        <div style="text-align: center; margin-top: 100px;">
+            <i class="fas fa-spinner fa-pulse" style="font-size: 50px; color: #000;"></i>
+            <p style="margin-top: 20px;">Loading product...</p>
+        </div>
+    </div>
+
+    <div id="cartPage" class="cart-page">
+        <div class="cart-header">
+            <i class="fas fa-arrow-right" id="closeCart"></i>
+            <h2><i class="fas fa-shopping-bag"></i> Shopping Cart</h2>
+        </div>
+        <div id="cartItems" class="cart-items"></div>
+        <div class="cart-footer">
+            <div class="cart-total">Total: <span id="cartTotal">0</span> T</div>
+            <button class="checkout-btn" onclick="checkout()">Checkout</button>
+        </div>
+    </div>
+
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Create an account</h2>
+            <input type="tel" id="phone" placeholder="Phone number">
+            <input type="password" id="password" placeholder="Password">
+            <button onclick="register()">Register</button>
+        </div>
+    </div>
+
+    <script>
+        // منتظر می‌مانیم تا DOM و script.js کامل بارگذاری شوند
+        function loadProduct() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const productId = urlParams.get('id');
+            const container = document.getElementById('productContainer');
+
+            // بررسی وجود productsData (از script.js)
+            if (typeof productsData === 'undefined') {
+                // اگر هنوز productsData تعریف نشده، دوباره تلاش کن
+                setTimeout(loadProduct, 100);
+                return;
+            }
+
+            if (productId && productsData[productId]) {
+                window.currentProductId = productId;
+                const p = productsData[productId];
+                
+                container.innerHTML = `
+                    <div style="background: #f5f5f5; padding: 60px 20px 30px; text-align: center;">
+                        <img id="mainImage" src="${p.images[0]}" style="width: 400px; height: 400px; object-fit: cover; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.2);">
+                        <div style="display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; margin-top: 20px;">
+                            ${p.images.map(img => `<img src="${img}" style="width: 80px; height: 80px; object-fit: cover; border-radius: 8px; cursor: pointer; border: 2px solid transparent; transition: 0.3s;" onmouseover="this.style.borderColor='black'" onmouseout="this.style.borderColor='transparent'" onclick="document.getElementById('mainImage').src='${img}'">`).join('')}
+                        </div>
+                    </div>
+                    <div style="max-width: 800px; margin: 0 auto; padding: 30px; text-align: center;">
+                        <h1 style="font-size: 28px; margin-bottom: 15px; color: #000;">${p.name}</h1>
+                        <div style="font-size: 32px; font-weight: bold; color: #c62828; margin: 20px 0;">${p.price.toLocaleString()} T</div>
+                        <div style="font-size: 16px; line-height: 1.8; color: #111111; margin: 20px 0; text-align: center;">${p.description.replace(/\//g, '<br>')}</div>
+                        <div style="margin: 30px 0;">
+                            <label style="font-weight: bold;">Size : </label>
+                            <select id="sizeSelect" style="padding: 12px 20px; font-size: 16px; border-radius: 8px; border: 1px solid #000;">
+                                <option>40</option><option>41</option><option>42</option><option>43</option><option>44</option>
+                            </select>
+                        </div>
+                        <button onclick="addToCartFromDetail()" style="background: black; color: white; padding: 15px 40px; font-size: 18px; border: none; border-radius: 30px; cursor: pointer; transition: 0.3s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+                            <i class="fas fa-shopping-bag"></i> Add to Cart
+                        </button>
+                    </div>
+                `;
+            } else {
+                container.innerHTML = `
+                    <div style="text-align: center; margin-top: 100px;">
+                        <i class="fas fa-exclamation-triangle" style="font-size: 80px; color: #c62828;"></i>
+                        <h1 style="margin-top: 30px;">❌ Product Not Found</h1>
+                        <p style="color: #666; margin-top: 20px;">The product you are looking for does not exist.</p>
+                        <a href="index.html" style="display: inline-block; margin-top: 40px; background: black; color: white; padding: 12px 30px; border-radius: 30px; text-decoration: none;">← Back to Shop</a>
+                    </div>
+                `;
+            }
+        }
+
+        function addToCartFromDetail() {
+            const sizeSelect = document.getElementById('sizeSelect');
+            if (sizeSelect && window.currentProductId && typeof addToCart !== 'undefined') {
+                if (addToCart(window.currentProductId, sizeSelect.value)) {
+                    alert('✅ Product added to cart');
+                }
+            } else {
+                alert('Please try again');
+            }
+        }
+
+        // شروع بارگذاری محصول
+        loadProduct();
+    </script>
+</body>
+
+</html>
