@@ -19,6 +19,7 @@ An online sneaker store built with vanilla HTML, CSS, and JavaScript — no fram
 ## Tech Stack
 
 | Layer | Technology |
+|---|---|
 | Markup | HTML5 |
 | Styling | CSS3 |
 | Logic | Vanilla JavaScript |
