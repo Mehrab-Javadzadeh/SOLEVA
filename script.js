@@ -60,6 +60,26 @@ function displayCart() {
 
 function checkout() {
     if (cart.length === 0) { alert('Your cart is empty!'); return; }
+    
+    const currentUser = localStorage.getItem('currentUser');
+    if (!currentUser) {
+        const cartPage = document.getElementById('cartPage');
+        if(cartPage) cartPage.style.display = 'none';
+        document.body.style.overflow = 'auto';
+        
+        const modal = document.getElementById('authModal');
+        if (modal) {
+            modal.style.display = 'flex';
+            checkSession();
+            setTimeout(() => {
+                showError('registerError', 'Please login or register to complete your purchase.');
+            }, 100);
+        } else {
+            alert('Please login or register to complete your purchase.');
+        }
+        return;
+    }
+    
     alert('✅ Order placed!\nTotal: ' + getCartTotal().toLocaleString() + ' T');
     cart = []; saveCart(); displayCart(); 
     const cartPage = document.getElementById('cartPage');
