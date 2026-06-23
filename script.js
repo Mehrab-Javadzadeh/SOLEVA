@@ -193,6 +193,11 @@ function clearErrors() {
 }
 
 // 1. Account Creation & Validation Mechanics
+function isValidEmail(email) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+}
+
 function registerUser() {
     const emailInput = document.getElementById('regEmail');
     const passwordInput = document.getElementById('regPassword');
@@ -204,6 +209,9 @@ function registerUser() {
 
     if (!email || !password) {
         return showError('registerError', 'Please fill in all fields.');
+    }
+    if (!isValidEmail(email)) {
+    return showError('registerError', 'Please enter a valid email address.');
     }
     if (password.length < 6) {
         return showError('registerError', 'Password must be at least 6 characters.');
@@ -239,6 +247,9 @@ function loginUser() {
         return showError('loginError', 'Please enter your email and password.');
     }
 
+    if (!isValidEmail(email)) {
+    return showError('loginError', 'Please enter a valid email address.');
+    }
     let users = JSON.parse(localStorage.getItem('users')) || [];
     
     // Match local database profile credentials
