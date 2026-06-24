@@ -79,11 +79,55 @@ function checkout() {
         }
         return;
     }
-    
-    alert('✅ Order placed!\nTotal: ' + getCartTotal().toLocaleString() + ' T');
-    cart = []; saveCart(); displayCart(); 
+
+    // Close cart, open checkout modal
     const cartPage = document.getElementById('cartPage');
-    if(cartPage) cartPage.style.display = 'none'; 
+    if(cartPage) cartPage.style.display = 'none';
+
+    const checkoutModal = document.getElementById('checkoutModal');
+    if (checkoutModal) {
+        // Reset fields
+        document.getElementById('checkoutPhone').value = '';
+        document.getElementById('checkoutAddress').value = '';
+        document.getElementById('checkoutError').style.display = 'none';
+
+        // Show order summary
+        const summary = document.getElementById('checkoutSummary');
+        const itemLines = cart.map(item => `<span>${item.name} × ${item.quantity} (Size ${item.size})</span>`).join('');
+        summary.innerHTML = `<div class="summary-items">${itemLines}</div><div class="summary-total">Total: <strong>${getCartTotal().toLocaleString()} T</strong></div>`;
+
+        checkoutModal.style.display = 'flex';
+    }
+}
+
+function isValidIranPhone(phone) {
+    // Iranian mobile: starts with 09, exactly 11 digits
+    return /^09[0-9]{9}$/.test(phone);
+}
+
+function submitOrder() {
+    const phone = document.getElementById('checkoutPhone').value.trim();
+    const address = document.getElementById('checkoutAddress').value.trim();
+
+    if (!phone || !address) {
+        showError('checkoutError', 'Please fill in both phone number and address.');
+        return;
+    }
+    if (!isValidIranPhone(phone)) {
+        showError('checkoutError', 'Please enter a valid Iranian mobile number (e.g. 09121234567).');
+        return;
+    }
+    if (address.length < 10) {
+        showError('checkoutError', 'Please enter a more complete address.');
+        return;
+    }
+
+    // Place the order
+    alert('✅ Order placed!\nTotal: ' + getCartTotal().toLocaleString() + ' T\n📞 ' + phone + '\n📍 ' + address);
+    cart = []; saveCart(); displayCart();
+
+    const checkoutModal = document.getElementById('checkoutModal');
+    if(checkoutModal) checkoutModal.style.display = 'none';
     document.body.style.overflow = 'auto';
 }
 
@@ -101,6 +145,14 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     if (closeCart) {
         closeCart.onclick = function() { if(cartPage) cartPage.style.display = 'none'; document.body.style.overflow = 'auto'; }
+    }
+
+    const closeCheckout = document.getElementById('closeCheckout');
+    if (closeCheckout) {
+        closeCheckout.onclick = function() {
+            document.getElementById('checkoutModal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
     }
 
     // Initialize session state on page load
@@ -135,6 +187,10 @@ if(searchInput) {
 
 // Keydown Global Listener (Escape to Close Modals)
 document.addEventListener('keydown', function(e) { 
+    if (e.key === 'Escape' && document.getElementById('checkoutModal') && document.getElementById('checkoutModal').style.display === 'flex') {
+        document.getElementById('checkoutModal').style.display = 'none';
+        document.body.style.overflow = 'auto';
+    }
     if (e.key === 'Escape' && searchPage && searchPage.style.display === 'block') { 
         if(searchPage) searchPage.style.display = 'none'; 
         if(searchInput) searchInput.value = ''; 

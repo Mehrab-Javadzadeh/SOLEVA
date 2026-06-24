@@ -127,6 +127,20 @@
         </div>
     </div>
 
+    <div id="checkoutModal" class="modal">
+        <div class="modal-content">
+            <span class="close-auth" id="closeCheckout">&times;</span>
+            <div class="auth-form" id="checkoutForm">
+                <h2>Complete Order</h2>
+                <div id="checkoutError" class="error-msg"></div>
+                <input type="tel" id="checkoutPhone" placeholder="Phone number (e.g. 09121234567)" maxlength="11">
+                <textarea id="checkoutAddress" placeholder="Full delivery address (Province, City, Street, No.)" rows="4"></textarea>
+                <div id="checkoutSummary" class="checkout-summary"></div>
+                <button onclick="submitOrder()">Place Order</button>
+            </div>
+        </div>
+    </div>
+
     <div id="authModal" class="modal">
         <div class="modal-content">
             <span class="close-auth" id="closeAuth">&times;</span>
