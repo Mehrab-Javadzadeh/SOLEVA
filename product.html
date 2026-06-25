@@ -1,14 +1,12 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Soleva | Product</title>
-    <link rel="stylesheet" href="style.css">192.168.1.8
+    <link rel="stylesheet" href="style.css">
     <script src="script.js" defer></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
-
 <body>
     <div class="top-nav">
         <div class="nav-left">
@@ -45,26 +43,54 @@
         </div>
     </div>
 
-    <div id="loginModal" class="modal">
+    <div id="checkoutModal" class="modal">
         <div class="modal-content">
-            <span class="close">&times;</span>
-            <h2>Create an account</h2>
-            <input type="tel" id="phone" placeholder="Phone number">
-            <input type="password" id="password" placeholder="Password">
-            <button onclick="register()">Register</button>
+            <span class="close-modal" id="closeCheckout">&times;</span>
+            <div class="auth-form">
+                <h2>Complete Order</h2>
+                <div id="checkoutError" class="error-msg"></div>
+                <input type="tel" id="checkoutPhone" placeholder="Phone number (e.g. 09121234567)" maxlength="11">
+                <textarea id="checkoutAddress" placeholder="Full delivery address (Province, City, Street, No.)" rows="4"></textarea>
+                <div id="checkoutSummary" class="checkout-summary"></div>
+                <button onclick="submitOrder()">Place Order</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="authModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" id="closeAuth">&times;</span>
+            <div id="registerForm" class="auth-form">
+                <h2>Create Account</h2>
+                <div id="registerError" class="error-msg"></div>
+                <input type="email" id="regEmail" placeholder="Your Email">
+                <input type="password" id="regPassword" placeholder="Password (Min 6 characters)">
+                <button onclick="registerUser()">Register</button>
+                <p class="switch-form">Already have an account? <span onclick="toggleAuth('login')">Login</span></p>
+            </div>
+            <div id="loginForm" class="auth-form" style="display: none;">
+                <h2>Login</h2>
+                <div id="loginError" class="error-msg"></div>
+                <input type="email" id="logEmail" placeholder="Your Email">
+                <input type="password" id="logPassword" placeholder="Password">
+                <button onclick="loginUser()">Login</button>
+                <p class="switch-form">Don't have an account? <span onclick="toggleAuth('register')">Register</span></p>
+            </div>
+            <div id="profileView" class="auth-form" style="display: none;">
+                <h2>Welcome!</h2>
+                <p id="userEmailDisplay"></p>
+                <button onclick="logoutUser()" class="logout-btn">Logout</button>
+            </div>
         </div>
     </div>
 
     <script>
-        // منتظر می‌مانیم تا DOM و script.js کامل بارگذاری شوند
         function loadProduct() {
             const urlParams = new URLSearchParams(window.location.search);
             const productId = urlParams.get('id');
             const container = document.getElementById('productContainer');
 
-            // بررسی وجود productsData (از script.js)
             if (typeof productsData === 'undefined') {
-                // اگر هنوز productsData تعریف نشده، دوباره تلاش کن
                 setTimeout(loadProduct, 100);
                 return;
             }
@@ -72,7 +98,6 @@
             if (productId && productsData[productId]) {
                 window.currentProductId = productId;
                 const p = productsData[productId];
-                
                 container.innerHTML = `
                     <div style="background: #f5f5f5; padding: 60px 20px 30px; text-align: center;">
                         <img id="mainImage" src="${p.images[0]}" style="width: 400px; height: 400px; object-fit: cover; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.2);">
@@ -83,7 +108,7 @@
                     <div style="max-width: 800px; margin: 0 auto; padding: 30px; text-align: center;">
                         <h1 style="font-size: 28px; margin-bottom: 15px; color: #000;">${p.name}</h1>
                         <div style="font-size: 32px; font-weight: bold; color: #c62828; margin: 20px 0;">${p.price.toLocaleString()} T</div>
-                        <div style="font-size: 16px; line-height: 1.8; color: #111111; margin: 20px 0; text-align: center;">${p.description.replace(/\//g, '<br>')}</div>
+                        <div style="font-size: 16px; line-height: 1.8; color: #111; margin: 20px 0; text-align: center;">${p.description.replace(/\//g, '<br>')}</div>
                         <div style="margin: 30px 0;">
                             <label style="font-weight: bold;">Size : </label>
                             <select id="sizeSelect" style="padding: 12px 20px; font-size: 16px; border-radius: 8px; border: 1px solid #000;">
@@ -118,9 +143,7 @@
             }
         }
 
-        // شروع بارگذاری محصول
         loadProduct();
     </script>
 </body>
-
 </html>
