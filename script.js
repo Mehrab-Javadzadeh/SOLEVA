@@ -1,4 +1,3 @@
-// Product Data
 const productsData = {
     shoe1: { id: 'shoe1', name: 'Air Jordan 1 High OG Taxi', price: 28000000, priceText: '28,000,000 T', description: 'High-quality leather / High-cut form / Accurate color details / inspired by the color of a taxi / Wings logo on the wrist / Light and comfortable / For men and women', images: ['images/shoes1.png.jpg', 'images/shoes1(1).png.jpg', 'images/shoes1(2).png.jpg'] },
     shoe2: { id: 'shoe2', name: 'Air Jordan 1 High OG White Cement', price: 14900000, priceText: '14,900,000 T', description: 'Outsole with pivot circle pattern / High-cut form / High-quality leather / Light and comfortable / For men and women', images: ['images/shoes2.png.jpg', 'images/shoes2(1).png.jpg', 'images/shoes2(2).png.jpg'] },
@@ -268,3 +267,40 @@ function displayResults(container, products) {
             </div>
         </div>`).join('');
 }
+
+// Toggle password visibility
+document.addEventListener('DOMContentLoaded', function() {
+    // Register password toggle
+    const toggleRegPass = document.getElementById('toggleRegPassword');
+    const regPassInput = document.getElementById('regPassword');
+    if (toggleRegPass && regPassInput) {
+        toggleRegPass.addEventListener('click', function() {
+            if (regPassInput.type === 'password') {
+                regPassInput.type = 'text';
+                this.classList.remove('fa-eye');
+                this.classList.add('fa-eye-slash');
+            } else {
+                regPassInput.type = 'password';
+                this.classList.remove('fa-eye-slash');
+                this.classList.add('fa-eye');
+            }
+        });
+    }
+
+    // Login password toggle
+    const toggleLogPass = document.getElementById('toggleLogPassword');
+    const logPassInput = document.getElementById('logPassword');
+    if (toggleLogPass && logPassInput) {
+        toggleLogPass.addEventListener('click', function() {
+            if (logPassInput.type === 'password') {
+                logPassInput.type = 'text';
+                this.classList.remove('fa-eye');
+                this.classList.add('fa-eye-slash');
+            } else {
+                logPassInput.type = 'password';
+                this.classList.remove('fa-eye-slash');
+                this.classList.add('fa-eye');
+            }
+        });
+    }
+});

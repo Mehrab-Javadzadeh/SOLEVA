@@ -64,15 +64,21 @@
                 <h2>Create Account</h2>
                 <div id="registerError" class="error-msg"></div>
                 <input type="email" id="regEmail" placeholder="Your Email">
-                <input type="password" id="regPassword" placeholder="Password (Min 6 characters)">
+                <div style="position: relative; width: 100%;">
+                    <input type="password" id="regPassword" placeholder="Password (Min 6 characters)" style="width: 100%; padding-right: 45px;">
+                    <i class="fas fa-eye" id="toggleRegPassword" style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); cursor: pointer; color: #999; font-size: 18px;"></i>
+                </div>
                 <button onclick="registerUser()">Register</button>
-                <p class="switch-form">Already have an account? <span onclick="toggleAuth('login')">Login</span></p>
+                <p class="switch-form">Already have an account ? <span onclick="toggleAuth('login')">Login</span></p>
             </div>
             <div id="loginForm" class="auth-form" style="display: none;">
                 <h2>Login</h2>
                 <div id="loginError" class="error-msg"></div>
                 <input type="email" id="logEmail" placeholder="Your Email">
-                <input type="password" id="logPassword" placeholder="Password">
+                <div style="position: relative; width: 100%;">
+                    <input type="password" id="logPassword" placeholder="Password" style="width: 100%; padding-right: 45px;">
+                    <i class="fas fa-eye" id="toggleLogPassword" style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); cursor: pointer; color: #999; font-size: 18px;"></i>
+                </div>
                 <button onclick="loginUser()">Login</button>
                 <p class="switch-form">Don't have an account? <span onclick="toggleAuth('register')">Register</span></p>
             </div>
@@ -143,7 +149,12 @@
             }
         }
 
-        loadProduct();
+        // Load product when page is ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', loadProduct);
+        } else {
+            loadProduct();
+        }
     </script>
 </body>
 </html>
