@@ -195,6 +195,7 @@ function startSession(email) {
     checkSession();
     const authModal = document.getElementById('authModal');
     if (authModal) authModal.style.display = 'none';
+    updateMenuUserStatus();
 }
 
 function logoutUser() {
@@ -206,6 +207,7 @@ function logoutUser() {
     if (document.getElementById('regPassword')) document.getElementById('regPassword').value = '';
     const authModal = document.getElementById('authModal');
     if (authModal) authModal.style.display = 'none';
+    updateMenuUserStatus();
 }
 
 // DOM Events — all wired up after DOM is ready
@@ -303,4 +305,136 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
+});
+
+// Side Menu Functions
+function openMenu() {
+    const menu = document.getElementById('sideMenu');
+    const overlay = document.getElementById('menuOverlay');
+    if (menu) {
+        menu.classList.add('open');
+        document.body.style.overflow = 'hidden';
+        updateMenuUserStatus();
+    }
+    if (overlay) overlay.classList.add('show');
+}
+
+function closeMenu() {
+    const menu = document.getElementById('sideMenu');
+    const overlay = document.getElementById('menuOverlay');
+    if (menu) {
+        menu.classList.remove('open');
+        document.body.style.overflow = 'auto';
+    }
+    if (overlay) overlay.classList.remove('show');
+}
+
+function updateMenuUserStatus() {
+    const currentUser = localStorage.getItem('currentUser');
+    const userName = document.getElementById('menuUserName');
+    const userEmail = document.getElementById('menuUserEmail');
+    const userIcon = document.getElementById('menuUserIcon');
+    const authText = document.getElementById('menuAuthText');
+    const logoutBtn = document.getElementById('menuLogoutBtn');
+    const authAction = document.getElementById('menuAuthAction');
+
+    if (currentUser) {
+        if (userName) userName.textContent = 'Welcome!';
+        if (userEmail) userEmail.textContent = currentUser;
+        if (userIcon) userIcon.classList.add('logged-in');
+        if (authText) authText.textContent = 'My Account';
+        if (logoutBtn) logoutBtn.style.display = 'flex';
+        if (authAction) authAction.href = '#';
+    } else {
+        if (userName) userName.textContent = 'Guest';
+        if (userEmail) userEmail.textContent = 'Not logged in';
+        if (userIcon) userIcon.classList.remove('logged-in');
+        if (authText) authText.textContent = 'Login / Register';
+        if (logoutBtn) logoutBtn.style.display = 'none';
+        if (authAction) authAction.href = '#';
+    }
+}
+
+function openAuthFromMenu() {
+    const currentUser = localStorage.getItem('currentUser');
+    if (currentUser) {
+        // If logged in, show profile
+        const authModal = document.getElementById('authModal');
+        if (authModal) {
+            closeMenu();
+            setTimeout(() => {
+                authModal.style.display = 'flex';
+                checkSession();
+            }, 300);
+        }
+        return;
+    }
+    closeMenu();
+    setTimeout(() => {
+        const authModal = document.getElementById('authModal');
+        if (authModal) {
+            authModal.style.display = 'flex';
+            checkSession();
+        }
+    }, 300);
+}
+
+function logoutFromMenu() {
+    if (confirm('Are you sure you want to logout?')) {
+        logoutUser();
+        closeMenu();
+        setTimeout(updateMenuUserStatus, 100);
+        const userIconEl = document.getElementById('userIcon');
+        if (userIconEl) userIconEl.style.color = '';
+    }
+}
+
+// Menu toggle event listeners
+document.addEventListener('DOMContentLoaded', function() {
+    // Side Menu
+    const menuIcon = document.getElementById('menuIcon');
+    const closeMenuBtn = document.getElementById('closeMenu');
+    const sideMenu = document.getElementById('sideMenu');
+
+    // Create overlay if it doesn't exist
+    if (!document.getElementById('menuOverlay')) {
+        const overlay = document.createElement('div');
+        overlay.id = 'menuOverlay';
+        overlay.className = 'menu-overlay';
+        document.body.appendChild(overlay);
+        
+        overlay.addEventListener('click', closeMenu);
+    }
+
+    if (menuIcon) {
+        menuIcon.addEventListener('click', openMenu);
+    }
+
+    if (closeMenuBtn) {
+        closeMenuBtn.addEventListener('click', closeMenu);
+    }
+
+    // Close menu with Escape key
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            const menu = document.getElementById('sideMenu');
+            if (menu && menu.classList.contains('open')) {
+                closeMenu();
+            }
+        }
+    });
+
+    // Update menu status when auth modal closes
+    const authModal = document.getElementById('authModal');
+    if (authModal) {
+        const observer = new MutationObserver(function() {
+            if (authModal.style.display === 'none' || authModal.style.display === '') {
+                updateMenuUserStatus();
+            }
+        });
+        observer.observe(authModal, { attributes: true, attributeFilter: ['style'] });
+    }
+
+    // Initial update 
+    updateMenuUserStatus();
 });
