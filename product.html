@@ -50,11 +50,8 @@
                 <a href="#" class="menu-item" onclick="logoutFromMenu()" id="menuLogoutBtn" style="display: none;">
                     <i class="fas fa-sign-out-alt"></i> Logout
                 </a>
-                <a href="#" class="menu-item">
+                <a href="#" class="menu-item" onclick="openCartFromMenu()">
                     <i class="fas fa-shopping-bag"></i> My Orders
-                </a>
-                <a href="#" class="menu-item">
-                    <i class="fas fa-heart"></i> Wishlist
                 </a>
             </div>
         </div>
@@ -196,16 +193,41 @@
             loadProduct();
         }
 
-        // Force menu to work on product.html
-        document.addEventListener('DOMContentLoaded', function() {
-            const menuIcon = document.getElementById('menuIcon');
-            if (menuIcon) {
-                menuIcon.onclick = function(e) {
-                    e.preventDefault();
-                    openMenu();
-                };
+        // Simple fix for menu on product.html
+        (function() {
+            function initMenu() {
+                var menuIcon = document.getElementById('menuIcon');
+                if (menuIcon) {
+                    var newMenuIcon = menuIcon.cloneNode(true);
+                    menuIcon.parentNode.replaceChild(newMenuIcon, menuIcon);
+                    
+                    newMenuIcon.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        if (typeof openMenu === 'function') {
+                            openMenu();
+                        } else {
+                            var menu = document.getElementById('sideMenu');
+                            var overlay = document.getElementById('menuOverlay');
+                            if (menu) {
+                                menu.classList.add('open');
+                                document.body.style.overflow = 'hidden';
+                                if (typeof updateMenuUserStatus === 'function') {
+                                    updateMenuUserStatus();
+                                }
+                            }
+                            if (overlay) overlay.classList.add('show');
+                        }
+                    });
+                }
             }
-        });
+
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', initMenu);
+            } else {
+                initMenu();
+            }
+        })();
     </script>
 </body>
 </html>

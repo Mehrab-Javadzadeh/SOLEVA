@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
+    <!-- Top Navigation Bar -->
     <div class="top-nav">
         <div class="nav-left">
             <i class="fas fa-search" id="searchIcon"></i>
@@ -21,10 +22,43 @@
         <div class="nav-right">
             <i class="fas fa-user" id="userIcon"></i>
             <i class="fas fa-shopping-bag" id="cartIcon"></i>
-            <i class="fas fa-bars"></i>
+            <i class="fas fa-bars" id="menuIcon"></i>
         </div>
     </div>
 
+    <!-- Side Menu -->
+    <div id="sideMenu" class="side-menu">
+        <div class="side-menu-header">
+            <h2>Soleva</h2>
+            <i class="fas fa-times" id="closeMenu"></i>
+        </div>
+        <div class="side-menu-body">
+            <div id="menuUserStatus" class="menu-user-status">
+                <i class="fas fa-user-circle" id="menuUserIcon"></i>
+                <div>
+                    <div id="menuUserName">Guest</div>
+                    <div id="menuUserEmail" class="menu-user-email">Not logged in</div>
+                </div>
+            </div>
+            <hr>
+            <div class="menu-items">
+                <a href="index.html" class="menu-item">
+                    <i class="fas fa-home"></i> Home
+                </a>
+                <a href="#" class="menu-item" id="menuAuthAction" onclick="openAuthFromMenu()">
+                    <i class="fas fa-sign-in-alt"></i> <span id="menuAuthText">Login / Register</span>
+                </a>
+                <a href="#" class="menu-item" onclick="logoutFromMenu()" id="menuLogoutBtn" style="display: none;">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </a>
+                <a href="#" class="menu-item" onclick="openCartFromMenu()">
+                    <i class="fas fa-shopping-bag"></i> My Orders
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Products Grid -->
     <div class="products">
         <a href="product.html?id=shoe1" class="product-link">
             <div class="product">
@@ -91,6 +125,7 @@
         </a>
     </div>
 
+    <!-- Search Page -->
     <div id="searchPage" class="search-page">
         <div class="search-header">
             <i class="fas fa-arrow-right" id="closeSearch"></i>
@@ -99,6 +134,7 @@
         <div id="searchResults" class="search-results"></div>
     </div>
 
+    <!-- Cart Page -->
     <div id="cartPage" class="cart-page">
         <div class="cart-header">
             <i class="fas fa-arrow-right" id="closeCart"></i>
@@ -111,6 +147,7 @@
         </div>
     </div>
 
+    <!-- Checkout Modal -->
     <div id="checkoutModal" class="modal">
         <div class="modal-content">
             <span class="close-modal" id="closeCheckout">&times;</span>
@@ -125,6 +162,7 @@
         </div>
     </div>
 
+    <!-- Auth Modal -->
     <div id="authModal" class="modal">
         <div class="modal-content">
             <span class="close-modal" id="closeAuth">&times;</span>
@@ -157,5 +195,42 @@
             </div>
         </div>
     </div>
+
+    <script>
+        (function() {
+            function initMenu() {
+                var menuIcon = document.getElementById('menuIcon');
+                if (menuIcon) {
+                    var newMenuIcon = menuIcon.cloneNode(true);
+                    menuIcon.parentNode.replaceChild(newMenuIcon, menuIcon);
+                    
+                    newMenuIcon.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        if (typeof openMenu === 'function') {
+                            openMenu();
+                        } else {
+                            var menu = document.getElementById('sideMenu');
+                            var overlay = document.getElementById('menuOverlay');
+                            if (menu) {
+                                menu.classList.add('open');
+                                document.body.style.overflow = 'hidden';
+                                if (typeof updateMenuUserStatus === 'function') {
+                                    updateMenuUserStatus();
+                                }
+                            }
+                            if (overlay) overlay.classList.add('show');
+                        }
+                    });
+                }
+            }
+
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', initMenu);
+            } else {
+                initMenu();
+            }
+        })();
+    </script>
 </body>
 </html>
