@@ -1,3 +1,5 @@
+/* ── Base ─────────────────────────────────────────────────────────────────── */
+
 body {
     margin: 0;
     padding: 0;
@@ -5,7 +7,10 @@ body {
     background-color: #aeaeae;
 }
 
-/* Top Navigation Bar */
+
+/* ── Top Navigation Bar ───────────────────────────────────────────────────── */
+
+/* Fixed navbar pinned to the top of the viewport */
 .top-nav {
     position: fixed;
     top: 0;
@@ -21,6 +26,7 @@ body {
     z-index: 100;
 }
 
+/* Three equal sections: left icons, center logo, right icons */
 .nav-left { flex: 1; text-align: left; }
 .nav-center { flex: 1; text-align: center; }
 .nav-right { flex: 1; text-align: right; }
@@ -39,7 +45,10 @@ body {
     object-fit: contain;
 }
 
-/* Products Layout */
+
+/* ── Products Grid ────────────────────────────────────────────────────────── */
+
+/* 3-column grid with spacing below the fixed navbar */
 .products {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -50,6 +59,7 @@ body {
 
 .product-link { text-decoration: none; }
 
+/* Card lifts up slightly on hover */
 .product {
     text-align: center;
     cursor: pointer;
@@ -79,7 +89,10 @@ body {
     margin: 5px 0;
 }
 
-/* Modals */
+
+/* ── Modals ───────────────────────────────────────────────────────────────── */
+
+/* Full-screen backdrop; hidden by default */
 .modal {
     display: none;
     position: fixed;
@@ -135,6 +148,7 @@ body {
 
 .modal-content button:hover { background: #333; }
 
+/* × button positioned at top-right of modal */
 .close-modal {
     position: absolute;
     top: 10px;
@@ -154,6 +168,7 @@ body {
     gap: 10px;
 }
 
+/* Inline error banner inside a form */
 .error-msg {
     color: #ff4d4d;
     font-size: 0.9em;
@@ -165,6 +180,7 @@ body {
     border: 1px solid #ffcccc;
 }
 
+/* Link to switch between login and register */
 .switch-form {
     font-size: 0.9em;
     text-align: center;
@@ -180,6 +196,7 @@ body {
 
 .switch-form span:hover { text-decoration: underline; }
 
+/* Red logout button style override */
 .logout-btn {
     background-color: #dc3545 !important;
     margin-top: 20px;
@@ -187,6 +204,7 @@ body {
 
 .logout-btn:hover { background-color: #c82333 !important; }
 
+/* Displays the logged-in user's email in the profile view */
 #userEmailDisplay {
     text-align: center;
     font-size: 1.1em;
@@ -196,7 +214,10 @@ body {
     margin: 10px 0;
 }
 
-/* Search Page */
+
+/* ── Search Page ──────────────────────────────────────────────────────────── */
+
+/* Full-screen search overlay; hidden by default */
 .search-page {
     display: none;
     position: fixed;
@@ -208,6 +229,7 @@ body {
     z-index: 2000;
 }
 
+/* Black header bar with search input and back arrow */
 .search-header {
     background: black;
     padding: 20px;
@@ -232,6 +254,7 @@ body {
     outline: none;
 }
 
+/* Scrollable area for search results */
 .search-results {
     padding: 20px;
     max-height: calc(100% - 80px);
@@ -278,7 +301,10 @@ body {
     font-size: 18px;
 }
 
-/* Cart Page */
+
+/* ── Cart Page ────────────────────────────────────────────────────────────── */
+
+/* Full-screen cart overlay; hidden by default */
 .cart-page {
     display: none;
     position: fixed;
@@ -291,6 +317,7 @@ body {
     overflow-y: auto;
 }
 
+/* Sticky black header with back arrow and title */
 .cart-header {
     background: black;
     color: white;
@@ -345,6 +372,7 @@ body {
     color: #666;
 }
 
+/* Quantity controls and remove button */
 .cart-item-actions {
     display: flex;
     align-items: center;
@@ -381,6 +409,7 @@ body {
     text-align: center;
 }
 
+/* Sticky footer showing total price and checkout button */
 .cart-footer {
     position: sticky;
     bottom: 0;
@@ -418,6 +447,7 @@ body {
     transform: scale(1.05);
 }
 
+/* Shown when the cart has no items */
 .empty-cart {
     text-align: center;
     padding: 60px;
@@ -425,7 +455,9 @@ body {
     color: #999;
 }
 
-/* Checkout Modal */
+
+/* ── Checkout Modal ───────────────────────────────────────────────────────── */
+
 #checkoutModal .modal-content { width: 360px; }
 
 #checkoutModal textarea {
@@ -441,6 +473,7 @@ body {
     text-align: left;
 }
 
+/* Order summary box above the submit button */
 .checkout-summary {
     background: #f5f5f5;
     border-radius: 8px;
@@ -464,7 +497,10 @@ body {
     color: #000;
 }
 
-/* Side Menu */
+
+/* ── Side Menu ────────────────────────────────────────────────────────────── */
+
+/* Slides in from the right; hidden off-screen by default */
 .side-menu {
     position: fixed;
     top: 0;
@@ -478,10 +514,12 @@ body {
     overflow-y: auto;
 }
 
+/* Moves menu into view */
 .side-menu.open {
     right: 0;
 }
 
+/* Sticky black header with title and close icon */
 .side-menu-header {
     background: black;
     color: white;
@@ -513,6 +551,7 @@ body {
     padding: 20px;
 }
 
+/* User avatar and info row at the top of the menu */
 .menu-user-status {
     display: flex;
     align-items: center;
@@ -525,6 +564,7 @@ body {
     color: #555;
 }
 
+/* Green icon when a user is logged in */
 .menu-user-status i.logged-in {
     color: #28a745;
 }
@@ -584,7 +624,10 @@ hr {
     color: #000;
 }
 
-/* Overlay for side menu */
+
+/* ── Menu Overlay ─────────────────────────────────────────────────────────── */
+
+/* Semi-transparent backdrop behind the side menu */
 .menu-overlay {
     display: none;
     position: fixed;
@@ -596,6 +639,7 @@ hr {
     z-index: 4999;
 }
 
+/* Shown when the side menu is open */
 .menu-overlay.show {
     display: block;
 }

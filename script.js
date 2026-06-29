@@ -1,3 +1,6 @@
+// ── Product Data ─────────────────────────────────────────────────────────────
+
+// All product details stored as an object keyed by product ID
 const productsData = {
     shoe1: { id: 'shoe1', name: 'Air Jordan 1 High OG Taxi', price: 28000000, priceText: '28,000,000 T', description: 'High-quality leather / High-cut form / Accurate color details / inspired by the color of a taxi / Wings logo on the wrist / Light and comfortable / For men and women', images: ['images/shoes1.png.jpg', 'images/shoes1(1).png.jpg', 'images/shoes1(2).png.jpg'] },
     shoe2: { id: 'shoe2', name: 'Air Jordan 1 High OG White Cement', price: 14900000, priceText: '14,900,000 T', description: 'Outsole with pivot circle pattern / High-cut form / High-quality leather / Light and comfortable / For men and women', images: ['images/shoes2.png.jpg', 'images/shoes2(1).png.jpg', 'images/shoes2(2).png.jpg'] },
@@ -10,6 +13,7 @@ const productsData = {
     shoe9: { id: 'shoe9', name: 'Air Force 1 Undefeated Beige Black', price: 6470000, priceText: '6,470,000 T', description: 'Perfume scent / Light and comfortable / Antibacterial and anti-oder / Synthetic leather / For men and women', images: ['images/shoes9.png.jpg', 'images/shoes9(1).png.jpg', 'images/shoes9(2).png.jpg'] }
 };
 
+// Flat array used for search results and listings
 const productsList = Object.keys(productsData).map(key => ({
     id: productsData[key].id,
     name: productsData[key].name,
@@ -17,11 +21,16 @@ const productsList = Object.keys(productsData).map(key => ({
     image: productsData[key].images[0]
 }));
 
-// Cart
+
+// ── Cart ──────────────────────────────────────────────────────────────────────
+
+// Load cart from localStorage on page load
 let cart = JSON.parse(localStorage.getItem('cart')) || [];
 
+// Save current cart state to localStorage
 function saveCart() { localStorage.setItem('cart', JSON.stringify(cart)); }
 
+// Add a product to the cart; increase quantity if it already exists
 function addToCart(productId, size, quantity = 1) {
     const product = productsData[productId];
     if (!product) return false;
@@ -32,23 +41,30 @@ function addToCart(productId, size, quantity = 1) {
     return true;
 }
 
+// Remove an item by its index in the cart array
 function removeFromCart(index) { cart.splice(index, 1); saveCart(); displayCart(); }
 
+// Update item quantity; remove the item if quantity drops below 1
 function updateQuantity(index, newQuantity) {
     if (newQuantity < 1) { removeFromCart(index); return; }
     cart[index].quantity = newQuantity; saveCart(); displayCart();
 }
 
+// Calculate the total price of all cart items
 function getCartTotal() { return cart.reduce((sum, item) => sum + (item.priceValue * item.quantity), 0); }
 
+// Render cart items into the cart page UI
 function displayCart() {
     const cartContainer = document.getElementById('cartItems');
     if (!cartContainer) return;
+
     if (cart.length === 0) {
         cartContainer.innerHTML = '<div class="empty-cart">🛒 Your cart is empty</div>';
         if (document.getElementById('cartTotal')) document.getElementById('cartTotal').innerText = '0';
         return;
     }
+
+    // Build HTML for each cart item
     cartContainer.innerHTML = cart.map((item, index) => `
         <div class="cart-item">
             <img src="${item.image}">
@@ -64,14 +80,20 @@ function displayCart() {
                 <button class="remove-btn" onclick="removeFromCart(${index})"><i class="fas fa-trash"></i></button>
             </div>
         </div>`).join('');
+
     if (document.getElementById('cartTotal')) document.getElementById('cartTotal').innerText = getCartTotal().toLocaleString();
 }
 
-// Checkout
+
+// ── Checkout ──────────────────────────────────────────────────────────────────
+
+// Open checkout modal, or redirect to login if user is not authenticated
 function checkout() {
     if (cart.length === 0) { alert('Your cart is empty!'); return; }
+
     const currentUser = localStorage.getItem('currentUser');
     if (!currentUser) {
+        // Hide cart and prompt login
         const cartPage = document.getElementById('cartPage');
         if (cartPage) cartPage.style.display = 'none';
         document.body.style.overflow = 'auto';
@@ -83,6 +105,8 @@ function checkout() {
         }
         return;
     }
+
+    // Show checkout modal with order summary
     const cartPage = document.getElementById('cartPage');
     if (cartPage) cartPage.style.display = 'none';
     const checkoutModal = document.getElementById('checkoutModal');
@@ -96,26 +120,35 @@ function checkout() {
     }
 }
 
+// Validate Iranian mobile number format (e.g. 09121234567)
 function isValidIranPhone(phone) { return /^09[0-9]{9}$/.test(phone); }
 
+// Validate and submit the order
 function submitOrder() {
     const phone = document.getElementById('checkoutPhone').value.trim();
     const address = document.getElementById('checkoutAddress').value.trim();
     if (!phone || !address) { showError('checkoutError', 'Please fill in both phone number and address.'); return; }
     if (!isValidIranPhone(phone)) { showError('checkoutError', 'Please enter a valid Iranian mobile number (e.g. 09121234567).'); return; }
     if (address.length < 10) { showError('checkoutError', 'Please enter a more complete address.'); return; }
+
     alert('✅ Order placed!\nTotal: ' + getCartTotal().toLocaleString() + ' T\n📞 ' + phone + '\n📍 ' + address);
+
+    // Clear cart after successful order
     cart = []; saveCart(); displayCart();
     document.getElementById('checkoutModal').style.display = 'none';
     document.body.style.overflow = 'auto';
 }
 
-// Auth helpers
+
+// ── Auth Helpers ──────────────────────────────────────────────────────────────
+
+// Display an error message inside a given element
 function showError(elementId, message) {
     const el = document.getElementById(elementId);
     if (el) { el.innerText = message; el.style.display = 'block'; }
 }
 
+// Hide all auth error messages
 function clearErrors() {
     const regErr = document.getElementById('registerError');
     const logErr = document.getElementById('loginError');
@@ -123,6 +156,7 @@ function clearErrors() {
     if (logErr) logErr.style.display = 'none';
 }
 
+// Switch between login and register forms
 function toggleAuth(type) {
     const registerForm = document.getElementById('registerForm');
     const loginForm = document.getElementById('loginForm');
@@ -136,6 +170,7 @@ function toggleAuth(type) {
     clearErrors();
 }
 
+// Update the auth modal UI based on whether a user is logged in
 function checkSession() {
     const currentUser = localStorage.getItem('currentUser');
     const registerForm = document.getElementById('registerForm');
@@ -144,13 +179,16 @@ function checkSession() {
     const userEmailDisplay = document.getElementById('userEmailDisplay');
     const userIconEl = document.getElementById('userIcon');
     const authModal = document.getElementById('authModal');
+
     if (currentUser) {
+        // Show profile view for logged-in users
         if (registerForm) registerForm.style.display = 'none';
         if (loginForm) loginForm.style.display = 'none';
         if (profileView) profileView.style.display = 'flex';
         if (userEmailDisplay) userEmailDisplay.innerText = currentUser;
         if (userIconEl) userIconEl.style.color = '#28a745';
     } else {
+        // Show register form for guests
         if (profileView) profileView.style.display = 'none';
         if (registerForm) registerForm.style.display = 'flex';
         if (loginForm) loginForm.style.display = 'none';
@@ -158,8 +196,10 @@ function checkSession() {
     }
 }
 
+// Basic email format validation using regex
 function isValidEmail(email) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email); }
 
+// Register a new user and save to localStorage
 function registerUser() {
     const emailInput = document.getElementById('regEmail');
     const passwordInput = document.getElementById('regPassword');
@@ -170,12 +210,14 @@ function registerUser() {
     if (!isValidEmail(email)) return showError('registerError', 'Please enter a valid email address.');
     if (password.length < 6) return showError('registerError', 'Password must be at least 6 characters.');
     let users = JSON.parse(localStorage.getItem('users')) || [];
+    // Prevent duplicate accounts
     if (users.some(u => u.email.toLowerCase() === email.toLowerCase())) return showError('registerError', 'An account with this email already exists.');
     users.push({ email, password });
     localStorage.setItem('users', JSON.stringify(users));
     startSession(email);
 }
 
+// Validate credentials and log in the user
 function loginUser() {
     const emailInput = document.getElementById('logEmail');
     const passwordInput = document.getElementById('logPassword');
@@ -190,6 +232,7 @@ function loginUser() {
     else showError('loginError', 'Incorrect email or password.');
 }
 
+// Save session, close modal, and update UI
 function startSession(email) {
     localStorage.setItem('currentUser', email);
     checkSession();
@@ -198,6 +241,7 @@ function startSession(email) {
     updateMenuUserStatus();
 }
 
+// Clear session and reset all auth form fields
 function logoutUser() {
     localStorage.removeItem('currentUser');
     checkSession();
@@ -210,7 +254,10 @@ function logoutUser() {
     updateMenuUserStatus();
 }
 
-// DOM Events — all wired up after DOM is ready
+
+// ── DOM Events ────────────────────────────────────────────────────────────────
+
+// All DOM interactions wired up after the page has fully loaded
 document.addEventListener('DOMContentLoaded', function () {
     const cartPage = document.getElementById('cartPage');
     const cartIcon = document.getElementById('cartIcon');
@@ -225,12 +272,16 @@ document.addEventListener('DOMContentLoaded', function () {
     const searchInput = document.getElementById('searchInput');
     const searchResults = document.getElementById('searchResults');
 
+    // Cart open/close
     if (cartIcon) cartIcon.onclick = function () { displayCart(); if (cartPage) cartPage.style.display = 'block'; document.body.style.overflow = 'hidden'; };
     if (closeCart) closeCart.onclick = function () { if (cartPage) cartPage.style.display = 'none'; document.body.style.overflow = 'auto'; };
     if (closeCheckout) closeCheckout.onclick = function () { document.getElementById('checkoutModal').style.display = 'none'; document.body.style.overflow = 'auto'; };
+
+    // Auth modal open/close
     if (userIcon) userIcon.onclick = function () { if (authModal) authModal.style.display = 'flex'; checkSession(); };
     if (closeAuth) closeAuth.onclick = function () { if (authModal) authModal.style.display = 'none'; };
 
+    // Search open/close and live filtering
     if (searchIcon) searchIcon.onclick = function () { if (searchPage) searchPage.style.display = 'block'; if (searchInput) searchInput.focus(); displayResults(searchResults, productsList); };
     if (closeSearch) closeSearch.onclick = function () { if (searchPage) searchPage.style.display = 'none'; if (searchInput) searchInput.value = ''; };
     if (searchInput) {
@@ -240,6 +291,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
+    // Close any open overlay with the Escape key
     document.addEventListener('keydown', function (e) {
         if (e.key === 'Escape') {
             if (searchPage && searchPage.style.display === 'block') { searchPage.style.display = 'none'; if (searchInput) searchInput.value = ''; }
@@ -249,6 +301,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
+    // Close modal when clicking on the backdrop
     window.onclick = function (event) {
         if (event.target == authModal) authModal.style.display = 'none';
         if (event.target == cartPage) { cartPage.style.display = 'none'; document.body.style.overflow = 'auto'; }
@@ -257,6 +310,7 @@ document.addEventListener('DOMContentLoaded', function () {
     checkSession();
 });
 
+// Render search result items into the results container
 function displayResults(container, products) {
     if (!container) return;
     if (products.length === 0) { container.innerHTML = '<div class="no-results">No results found</div>'; return; }
@@ -270,9 +324,11 @@ function displayResults(container, products) {
         </div>`).join('');
 }
 
-// Toggle password visibility
+
+// ── Password Visibility Toggle ────────────────────────────────────────────────
+
 document.addEventListener('DOMContentLoaded', function() {
-    // Register password toggle
+    // Toggle password visibility on the register form
     const toggleRegPass = document.getElementById('toggleRegPassword');
     const regPassInput = document.getElementById('regPassword');
     if (toggleRegPass && regPassInput) {
@@ -289,7 +345,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Login password toggle
+    // Toggle password visibility on the login form
     const toggleLogPass = document.getElementById('toggleLogPassword');
     const logPassInput = document.getElementById('logPassword');
     if (toggleLogPass && logPassInput) {
@@ -307,7 +363,10 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
-// Side Menu Functions
+
+// ── Side Menu ─────────────────────────────────────────────────────────────────
+
+// Slide the side menu in and lock scroll
 function openMenu() {
     var menu = document.getElementById('sideMenu');
     var overlay = document.getElementById('menuOverlay');
@@ -321,6 +380,7 @@ function openMenu() {
     if (overlay) overlay.classList.add('show');
 }
 
+// Slide the side menu out and restore scroll
 function closeMenu() {
     var menu = document.getElementById('sideMenu');
     var overlay = document.getElementById('menuOverlay');
@@ -331,6 +391,7 @@ function closeMenu() {
     if (overlay) overlay.classList.remove('show');
 }
 
+// Sync menu user info with the current session state
 function updateMenuUserStatus() {
     var currentUser = localStorage.getItem('currentUser');
     var userName = document.getElementById('menuUserName');
@@ -357,19 +418,9 @@ function updateMenuUserStatus() {
     }
 }
 
+// Open auth modal from the side menu (closes menu first)
 function openAuthFromMenu() {
     var currentUser = localStorage.getItem('currentUser');
-    if (currentUser) {
-        var authModal = document.getElementById('authModal');
-        if (authModal) {
-            closeMenu();
-            setTimeout(function() {
-                authModal.style.display = 'flex';
-                checkSession();
-            }, 300);
-        }
-        return;
-    }
     closeMenu();
     setTimeout(function() {
         var authModal = document.getElementById('authModal');
@@ -380,6 +431,7 @@ function openAuthFromMenu() {
     }, 300);
 }
 
+// Confirm logout from the side menu
 function logoutFromMenu() {
     if (confirm('Are you sure you want to logout?')) {
         logoutUser();
@@ -390,7 +442,7 @@ function logoutFromMenu() {
     }
 }
 
-// Open cart from menu (My Orders)
+// Open cart page from the side menu
 function openCartFromMenu() {
     closeMenu();
     setTimeout(function() {
@@ -403,27 +455,24 @@ function openCartFromMenu() {
     }, 300);
 }
 
-// Menu toggle event listeners
+// Wire up side menu toggle and overlay events after DOM is ready
 document.addEventListener('DOMContentLoaded', function() {
-    // Side Menu
     var menuIcon = document.getElementById('menuIcon');
     var closeMenuBtn = document.getElementById('closeMenu');
 
-    // Create overlay if it doesn't exist
+    // Dynamically create overlay if it doesn't exist in the HTML
     if (!document.getElementById('menuOverlay')) {
         var overlay = document.createElement('div');
         overlay.id = 'menuOverlay';
         overlay.className = 'menu-overlay';
         document.body.appendChild(overlay);
-        
         overlay.addEventListener('click', closeMenu);
     }
 
-    // Remove any existing click listeners by cloning
+    // Clone the menu icon to remove any duplicate listeners
     if (menuIcon) {
         var newMenuIcon = menuIcon.cloneNode(true);
         menuIcon.parentNode.replaceChild(newMenuIcon, menuIcon);
-        
         newMenuIcon.addEventListener('click', function(e) {
             e.preventDefault();
             e.stopPropagation();
@@ -435,7 +484,7 @@ document.addEventListener('DOMContentLoaded', function() {
         closeMenuBtn.addEventListener('click', closeMenu);
     }
 
-    // Close menu with Escape key
+    // Close side menu with Escape key
     document.addEventListener('keydown', function(e) {
         if (e.key === 'Escape') {
             var menu = document.getElementById('sideMenu');
@@ -445,7 +494,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Update menu status when auth modal closes
+    // Watch the auth modal and refresh menu status when it closes
     var authModal = document.getElementById('authModal');
     if (authModal) {
         var observer = new MutationObserver(function() {
@@ -456,6 +505,6 @@ document.addEventListener('DOMContentLoaded', function() {
         observer.observe(authModal, { attributes: true, attributeFilter: ['style'] });
     }
 
-    // Initial update 
+    // Set initial menu user state
     updateMenuUserStatus();
 });
