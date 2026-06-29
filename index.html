@@ -7,11 +7,12 @@
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#000000">
     <link rel="stylesheet" href="style.css">
-    <script src="script.js" defer></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <script src="script.js" defer></script>
 </head>
 <body>
-    <!-- Top Navigation Bar -->
+
+    <!-- header / navbar -->
     <div class="top-nav">
         <div class="nav-left">
             <i class="fas fa-search" id="searchIcon"></i>
@@ -26,7 +27,7 @@
         </div>
     </div>
 
-    <!-- Side Menu -->
+    <!-- sidebar menu -->
     <div id="sideMenu" class="side-menu">
         <div class="side-menu-header">
             <h2>Soleva</h2>
@@ -58,7 +59,7 @@
         </div>
     </div>
 
-    <!-- Products Grid -->
+    <!-- products grid -->
     <div class="products">
         <a href="product.html?id=shoe1" class="product-link">
             <div class="product">
@@ -125,7 +126,7 @@
         </a>
     </div>
 
-    <!-- Search Page -->
+    <!-- search overlay -->
     <div id="searchPage" class="search-page">
         <div class="search-header">
             <i class="fas fa-arrow-right" id="closeSearch"></i>
@@ -134,7 +135,7 @@
         <div id="searchResults" class="search-results"></div>
     </div>
 
-    <!-- Cart Page -->
+    <!-- cart overlay -->
     <div id="cartPage" class="cart-page">
         <div class="cart-header">
             <i class="fas fa-arrow-right" id="closeCart"></i>
@@ -147,7 +148,7 @@
         </div>
     </div>
 
-    <!-- Checkout Modal -->
+    <!-- checkout modal -->
     <div id="checkoutModal" class="modal">
         <div class="modal-content">
             <span class="close-modal" id="closeCheckout">&times;</span>
@@ -162,7 +163,7 @@
         </div>
     </div>
 
-    <!-- Auth Modal -->
+    <!-- auth modal -->
     <div id="authModal" class="modal">
         <div class="modal-content">
             <span class="close-modal" id="closeAuth">&times;</span>
@@ -197,40 +198,20 @@
     </div>
 
     <script>
-        (function() {
-            function initMenu() {
-                var menuIcon = document.getElementById('menuIcon');
-                if (menuIcon) {
-                    var newMenuIcon = menuIcon.cloneNode(true);
-                    menuIcon.parentNode.replaceChild(newMenuIcon, menuIcon);
-                    
-                    newMenuIcon.addEventListener('click', function(e) {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        if (typeof openMenu === 'function') {
-                            openMenu();
-                        } else {
-                            var menu = document.getElementById('sideMenu');
-                            var overlay = document.getElementById('menuOverlay');
-                            if (menu) {
-                                menu.classList.add('open');
-                                document.body.style.overflow = 'hidden';
-                                if (typeof updateMenuUserStatus === 'function') {
-                                    updateMenuUserStatus();
-                                }
-                            }
-                            if (overlay) overlay.classList.add('show');
-                        }
-                    });
-                }
+        // make sure menu icon works on this page too
+        document.addEventListener('DOMContentLoaded', function() {
+            var menuIcon = document.getElementById('menuIcon');
+            if (menuIcon) {
+                menuIcon.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    if (typeof openMenu === 'function') {
+                        openMenu();
+                    }
+                });
             }
-
-            if (document.readyState === 'loading') {
-                document.addEventListener('DOMContentLoaded', initMenu);
-            } else {
-                initMenu();
-            }
-        })();
+        });
     </script>
+
 </body>
 </html>
