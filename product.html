@@ -4,11 +4,12 @@
     <meta charset="UTF-8">
     <title>Soleva | Product</title>
     <link rel="stylesheet" href="style.css">
-    <script src="script.js" defer></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <script src="script.js" defer></script>
 </head>
 <body>
-    <!-- Top Navigation Bar -->
+
+    <!-- ====== navbar ====== -->
     <div class="top-nav">
         <div class="nav-left">
             <a href="index.html" style="color: white; text-decoration: none;">
@@ -25,7 +26,7 @@
         </div>
     </div>
 
-    <!-- Side Menu -->
+    <!-- ====== sidebar ====== -->
     <div id="sideMenu" class="side-menu">
         <div class="side-menu-header">
             <h2>Soleva</h2>
@@ -41,9 +42,7 @@
             </div>
             <hr>
             <div class="menu-items">
-                <a href="index.html" class="menu-item">
-                    <i class="fas fa-home"></i> Home
-                </a>
+                <a href="index.html" class="menu-item"><i class="fas fa-home"></i> Home</a>
                 <a href="#" class="menu-item" id="menuAuthAction" onclick="openAuthFromMenu()">
                     <i class="fas fa-sign-in-alt"></i> <span id="menuAuthText">Login / Register</span>
                 </a>
@@ -57,7 +56,7 @@
         </div>
     </div>
 
-    <!-- Product Container -->
+    <!-- ====== product detail area ====== -->
     <div id="productContainer" style="margin-top: 90px; padding: 20px; min-height: 400px;">
         <div style="text-align: center; margin-top: 100px;">
             <i class="fas fa-spinner fa-pulse" style="font-size: 50px; color: #000;"></i>
@@ -65,7 +64,7 @@
         </div>
     </div>
 
-    <!-- Cart Page -->
+    <!-- ====== cart overlay ====== -->
     <div id="cartPage" class="cart-page">
         <div class="cart-header">
             <i class="fas fa-arrow-right" id="closeCart"></i>
@@ -78,7 +77,7 @@
         </div>
     </div>
 
-    <!-- Checkout Modal -->
+    <!-- ====== checkout modal ====== -->
     <div id="checkoutModal" class="modal">
         <div class="modal-content">
             <span class="close-modal" id="closeCheckout">&times;</span>
@@ -93,10 +92,12 @@
         </div>
     </div>
 
-    <!-- Auth Modal -->
+    <!-- ====== auth modal ====== -->
     <div id="authModal" class="modal">
         <div class="modal-content">
             <span class="close-modal" id="closeAuth">&times;</span>
+
+            <!-- register form -->
             <div id="registerForm" class="auth-form">
                 <h2>Create Account</h2>
                 <div id="registerError" class="error-msg"></div>
@@ -108,6 +109,8 @@
                 <button onclick="registerUser()">Register</button>
                 <p class="switch-form">Already have an account? <span onclick="toggleAuth('login')">Login</span></p>
             </div>
+
+            <!-- login form -->
             <div id="loginForm" class="auth-form" style="display: none;">
                 <h2>Login</h2>
                 <div id="loginError" class="error-msg"></div>
@@ -119,6 +122,8 @@
                 <button onclick="loginUser()">Login</button>
                 <p class="switch-form">Don't have an account? <span onclick="toggleAuth('register')">Register</span></p>
             </div>
+
+            <!-- profile view -->
             <div id="profileView" class="auth-form" style="display: none;">
                 <h2>Welcome!</h2>
                 <p id="userEmailDisplay"></p>
@@ -128,11 +133,13 @@
     </div>
 
     <script>
+        // ====== load product data ======
         function loadProduct() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const productId = urlParams.get('id');
-            const container = document.getElementById('productContainer');
+            var params = new URLSearchParams(window.location.search);
+            var productId = params.get('id');
+            var container = document.getElementById('productContainer');
 
+            // wait for productsData to be ready (from script.js)
             if (typeof productsData === 'undefined') {
                 setTimeout(loadProduct, 100);
                 return;
@@ -140,43 +147,44 @@
 
             if (productId && productsData[productId]) {
                 window.currentProductId = productId;
-                const p = productsData[productId];
-                container.innerHTML = `
-                    <div style="background: #f5f5f5; padding: 60px 20px 30px; text-align: center;">
-                        <img id="mainImage" src="${p.images[0]}" style="width: 400px; height: 400px; object-fit: cover; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.2);">
-                        <div style="display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; margin-top: 20px;">
-                            ${p.images.map(img => `<img src="${img}" style="width: 80px; height: 80px; object-fit: cover; border-radius: 8px; cursor: pointer; border: 2px solid transparent; transition: 0.3s;" onmouseover="this.style.borderColor='black'" onmouseout="this.style.borderColor='transparent'" onclick="document.getElementById('mainImage').src='${img}'">`).join('')}
-                        </div>
-                    </div>
-                    <div style="max-width: 800px; margin: 0 auto; padding: 30px; text-align: center;">
-                        <h1 style="font-size: 28px; margin-bottom: 15px; color: #000;">${p.name}</h1>
-                        <div style="font-size: 32px; font-weight: bold; color: #c62828; margin: 20px 0;">${p.price.toLocaleString()} T</div>
-                        <div style="font-size: 16px; line-height: 1.8; color: #111; margin: 20px 0; text-align: center;">${p.description.replace(/\//g, '<br>')}</div>
-                        <div style="margin: 30px 0;">
-                            <label style="font-weight: bold;">Size : </label>
-                            <select id="sizeSelect" style="padding: 12px 20px; font-size: 16px; border-radius: 8px; border: 1px solid #000;">
-                                <option>40</option><option>41</option><option>42</option><option>43</option><option>44</option>
-                            </select>
-                        </div>
-                        <button onclick="addToCartFromDetail()" style="background: black; color: white; padding: 15px 40px; font-size: 18px; border: none; border-radius: 30px; cursor: pointer; transition: 0.3s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
-                            <i class="fas fa-shopping-bag"></i> Add to Cart
-                        </button>
-                    </div>
-                `;
+                var p = productsData[productId];
+
+                var imagesHtml = p.images.map(function(img) {
+                    return '<img src="' + img + '" style="width:80px;height:80px;object-fit:cover;border-radius:8px;cursor:pointer;border:2px solid transparent;transition:0.3s;" onmouseover="this.style.borderColor=\'black\'" onmouseout="this.style.borderColor=\'transparent\'" onclick="document.getElementById(\'mainImage\').src=\'' + img + '\'">';
+                }).join('');
+
+                container.innerHTML = 
+                    '<div style="background:#f5f5f5;padding:60px 20px 30px;text-align:center;">' +
+                        '<img id="mainImage" src="' + p.images[0] + '" style="width:400px;height:400px;object-fit:cover;border-radius:15px;box-shadow:0 5px 20px rgba(0,0,0,0.2);">' +
+                        '<div style="display:flex;justify-content:center;gap:15px;flex-wrap:wrap;margin-top:20px;">' + imagesHtml + '</div>' +
+                    '</div>' +
+                    '<div style="max-width:800px;margin:0 auto;padding:30px;text-align:center;">' +
+                        '<h1 style="font-size:28px;margin-bottom:15px;color:#000;">' + p.name + '</h1>' +
+                        '<div style="font-size:32px;font-weight:bold;color:#c62828;margin:20px 0;">' + p.price.toLocaleString() + ' T</div>' +
+                        '<div style="font-size:16px;line-height:1.8;color:#111;margin:20px 0;text-align:center;">' + p.description.replace(/\//g, '<br>') + '</div>' +
+                        '<div style="margin:30px 0;">' +
+                            '<label style="font-weight:bold;">Size : </label>' +
+                            '<select id="sizeSelect" style="padding:12px 20px;font-size:16px;border-radius:8px;border:1px solid #000;">' +
+                                '<option>40</option><option>41</option><option>42</option><option>43</option><option>44</option>' +
+                            '</select>' +
+                        '</div>' +
+                        '<button onclick="addToCartFromDetail()" style="background:black;color:white;padding:15px 40px;font-size:18px;border:none;border-radius:30px;cursor:pointer;transition:0.3s;" onmouseover="this.style.transform=\'scale(1.05)\'" onmouseout="this.style.transform=\'scale(1)\'">' +
+                            '<i class="fas fa-shopping-bag"></i> Add to Cart' +
+                        '</button>' +
+                    '</div>';
             } else {
-                container.innerHTML = `
-                    <div style="text-align: center; margin-top: 100px;">
-                        <i class="fas fa-exclamation-triangle" style="font-size: 80px; color: #c62828;"></i>
-                        <h1 style="margin-top: 30px;">❌ Product Not Found</h1>
-                        <p style="color: #666; margin-top: 20px;">The product you are looking for does not exist.</p>
-                        <a href="index.html" style="display: inline-block; margin-top: 40px; background: black; color: white; padding: 12px 30px; border-radius: 30px; text-decoration: none;">← Back to Shop</a>
-                    </div>
-                `;
+                container.innerHTML = 
+                    '<div style="text-align:center;margin-top:100px;">' +
+                        '<i class="fas fa-exclamation-triangle" style="font-size:80px;color:#c62828;"></i>' +
+                        '<h1 style="margin-top:30px;">❌ Product Not Found</h1>' +
+                        '<p style="color:#666;margin-top:20px;">The product you are looking for does not exist.</p>' +
+                        '<a href="index.html" style="display:inline-block;margin-top:40px;background:black;color:white;padding:12px 30px;border-radius:30px;text-decoration:none;">← Back to Shop</a>' +
+                    '</div>';
             }
         }
 
         function addToCartFromDetail() {
-            const sizeSelect = document.getElementById('sizeSelect');
+            var sizeSelect = document.getElementById('sizeSelect');
             if (sizeSelect && window.currentProductId && typeof addToCart !== 'undefined') {
                 if (addToCart(window.currentProductId, sizeSelect.value)) {
                     alert('✅ Product added to cart');
@@ -186,48 +194,27 @@
             }
         }
 
-        // Load product when page is ready
+        // ====== load product when page is ready ======
         if (document.readyState === 'loading') {
             document.addEventListener('DOMContentLoaded', loadProduct);
         } else {
             loadProduct();
         }
 
-        // Simple fix for menu on product.html
-        (function() {
-            function initMenu() {
-                var menuIcon = document.getElementById('menuIcon');
-                if (menuIcon) {
-                    var newMenuIcon = menuIcon.cloneNode(true);
-                    menuIcon.parentNode.replaceChild(newMenuIcon, menuIcon);
-                    
-                    newMenuIcon.addEventListener('click', function(e) {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        if (typeof openMenu === 'function') {
-                            openMenu();
-                        } else {
-                            var menu = document.getElementById('sideMenu');
-                            var overlay = document.getElementById('menuOverlay');
-                            if (menu) {
-                                menu.classList.add('open');
-                                document.body.style.overflow = 'hidden';
-                                if (typeof updateMenuUserStatus === 'function') {
-                                    updateMenuUserStatus();
-                                }
-                            }
-                            if (overlay) overlay.classList.add('show');
-                        }
-                    });
-                }
+        // ====== make sure the menu icon works ======
+        document.addEventListener('DOMContentLoaded', function() {
+            var menuIcon = document.getElementById('menuIcon');
+            if (menuIcon) {
+                menuIcon.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    if (typeof openMenu === 'function') {
+                        openMenu();
+                    }
+                });
             }
-
-            if (document.readyState === 'loading') {
-                document.addEventListener('DOMContentLoaded', initMenu);
-            } else {
-                initMenu();
-            }
-        })();
+        });
     </script>
+
 </body>
 </html>
