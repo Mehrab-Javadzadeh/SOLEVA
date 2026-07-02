@@ -643,3 +643,669 @@ hr {
 .menu-overlay.show {
     display: block;
 }
+
+
+/* ════════════════════════════════════════════════════════════════════════════
+   RESPONSIVE DESIGN - Mobile & Tablet
+   ════════════════════════════════════════════════════════════════════════════ */
+
+/* ====== Tablets (1024px and below) ====== */
+@media (max-width: 1024px) {
+    .products {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 25px;
+        padding: 20px;
+        margin-top: 80px;
+    }
+
+    .product img {
+        width: 100%;
+        max-width: 300px;
+        margin: 30px auto 12px auto;
+    }
+
+    .product h3 {
+        font-size: 17px;
+    }
+
+    .product p {
+        font-size: 19px;
+    }
+}
+
+/* ====== Mobile Phones (768px and below) ====== */
+@media (max-width: 768px) {
+
+    /* ── Top Nav ── */
+    .top-nav {
+        padding: 18px 20px !important;
+    }
+
+    .top-nav i {
+        font-size: 42px !important;
+        margin: 0 16px !important;
+    }
+
+    .logo {
+        height: 55px !important;
+    }
+
+    /* ── Products ── */
+    .products {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 35px !important;
+        padding: 25px !important;
+        margin-top: 90px !important;
+    }
+
+    .product img {
+        width: 100% !important;
+        max-width: 300px !important;
+        margin: 25px auto 15px auto !important;
+    }
+
+    .product h3 {
+        font-size: 20px !important;
+        margin: 12px 0 8px !important;
+        line-height: 1.5 !important;
+    }
+
+    .product p {
+        font-size: 22px !important;
+        font-weight: bold !important;
+        color: #c62828 !important;
+    }
+
+    /* ── SIDE MENU ── */
+    .side-menu {
+        width: 85% !important;
+        right: -85% !important;
+    }
+
+    .side-menu-header {
+        padding: 30px 30px !important;
+    }
+
+    .side-menu-header h2 {
+        font-size: 38px !important;
+        font-weight: bold !important;
+    }
+
+    .side-menu-header i {
+        font-size: 42px !important;
+    }
+
+    .side-menu-body {
+        padding: 30px !important;
+    }
+
+    .menu-user-status {
+        padding: 30px 0 !important;
+        gap: 25px !important;
+    }
+
+    .menu-user-status i {
+        font-size: 85px !important;
+    }
+
+    #menuUserName {
+        font-size: 34px !important;
+        font-weight: bold !important;
+    }
+
+    .menu-user-email {
+        font-size: 24px !important;
+    }
+
+    .menu-items {
+        gap: 12px !important;
+    }
+
+    .menu-item {
+        font-size: 28px !important;
+        padding: 24px 26px !important;
+        gap: 24px !important;
+        border-radius: 16px !important;
+    }
+
+    .menu-item i {
+        font-size: 32px !important;
+        width: 40px !important;
+    }
+
+    hr {
+        margin: 25px 0 !important;
+    }
+
+    /* ── Search ── */
+    .search-header {
+        padding: 25px !important;
+        gap: 20px !important;
+    }
+
+    .search-header i {
+        font-size: 38px !important;
+    }
+
+    .search-header input {
+        font-size: 26px !important;
+        padding: 18px !important;
+        border-radius: 14px !important;
+    }
+
+    .search-item {
+        padding: 20px !important;
+        gap: 20px !important;
+    }
+
+    .search-item img {
+        width: 90px !important;
+        height: 90px !important;
+    }
+
+    .search-item-info h3 {
+        font-size: 22px !important;
+    }
+
+    .search-item-price {
+        font-size: 22px !important;
+    }
+
+    .no-results {
+        font-size: 22px !important;
+    }
+
+    /* ── Cart ── */
+    .cart-header {
+        padding: 25px !important;
+    }
+
+    .cart-header i {
+        font-size: 38px !important;
+    }
+
+    .cart-header h2 {
+        font-size: 26px !important;
+    }
+
+    .cart-items {
+        padding: 20px !important;
+    }
+
+    .cart-item {
+        padding: 22px !important;
+        gap: 20px !important;
+        border-radius: 16px !important;
+    }
+
+    .cart-item img {
+        width: 100px !important;
+        height: 100px !important;
+    }
+
+    .cart-item-info h4 {
+        font-size: 20px !important;
+    }
+
+    .cart-item-info p {
+        font-size: 18px !important;
+    }
+
+    .cart-item-actions {
+        gap: 16px !important;
+    }
+
+    .cart-item-actions button {
+        width: 50px !important;
+        height: 50px !important;
+        font-size: 26px !important;
+        border-radius: 14px !important;
+    }
+
+    .cart-item-actions span {
+        font-size: 26px !important;
+        min-width: 40px !important;
+    }
+
+    .cart-footer {
+        padding: 25px !important;
+        gap: 20px !important;
+        flex-direction: column !important;
+    }
+
+    .cart-total {
+        font-size: 26px !important;
+    }
+
+    .cart-total span {
+        font-size: 32px !important;
+    }
+
+    .checkout-btn {
+        width: 100% !important;
+        padding: 20px !important;
+        font-size: 24px !important;
+        border-radius: 16px !important;
+    }
+
+    .empty-cart {
+        font-size: 24px !important;
+        padding: 50px !important;
+    }
+
+    /* ── Modals ── */
+    .modal-content {
+        width: 92% !important;
+        padding: 35px !important;
+        border-radius: 18px !important;
+    }
+
+    .modal-content h2 {
+        font-size: 28px !important;
+        margin-bottom: 20px !important;
+    }
+
+    .modal-content input {
+        padding: 18px !important;
+        font-size: 20px !important;
+        border-radius: 12px !important;
+        margin: 6px 0 !important;
+    }
+
+    .modal-content button {
+        padding: 18px !important;
+        font-size: 22px !important;
+        border-radius: 12px !important;
+        margin-top: 12px !important;
+    }
+
+    .switch-form {
+        font-size: 19px !important;
+        margin-top: 18px !important;
+    }
+
+    .close-modal {
+        font-size: 36px !important;
+        top: 15px !important;
+        right: 20px !important;
+    }
+
+    .error-msg {
+        font-size: 18px !important;
+        padding: 16px !important;
+    }
+
+    #userEmailDisplay {
+        font-size: 22px !important;
+    }
+
+    /* ── Checkout Modal ── */
+    #checkoutModal .modal-content {
+        width: 92% !important;
+        padding: 30px !important;
+    }
+
+    #checkoutModal textarea {
+        font-size: 20px !important;
+        padding: 18px !important;
+        border-radius: 12px !important;
+    }
+
+    .checkout-summary {
+        font-size: 18px !important;
+        padding: 18px !important;
+    }
+
+    .summary-total {
+        font-size: 22px !important;
+    }
+
+    /* ── Product Detail Page ── */
+    #productContainer {
+        margin-top: 85px !important;
+        padding: 15px !important;
+    }
+
+    #productContainer div[style*="background:#f5f5f5"] {
+        padding: 35px 15px 25px !important;
+    }
+
+    #productContainer img#mainImage {
+        width: 100% !important;
+        height: auto !important;
+        max-width: 480px !important;
+        max-height: 480px !important;
+        border-radius: 20px !important;
+    }
+
+    #productContainer div[style*="max-width: 800px"] {
+        padding: 25px 15px !important;
+    }
+
+    #productContainer h1 {
+        font-size: 30px !important;
+        margin-bottom: 18px !important;
+    }
+
+    #productContainer div[style*="font-size: 32px"] {
+        font-size: 34px !important;
+        margin: 20px 0 !important;
+    }
+
+    #productContainer div[style*="font-size: 16px"] {
+        font-size: 20px !important;
+        line-height: 2.4 !important;
+        margin: 20px 0 !important;
+    }
+
+    #productContainer label {
+        font-size: 24px !important;
+    }
+
+    #productContainer select {
+        padding: 18px 32px !important;
+        font-size: 22px !important;
+        width: 100% !important;
+        max-width: 280px !important;
+        border-radius: 14px !important;
+    }
+
+    #productContainer button[onclick*="addToCartFromDetail"] {
+        padding: 20px 50px !important;
+        font-size: 24px !important;
+        width: 100% !important;
+        max-width: 400px !important;
+        border-radius: 18px !important;
+        display: block !important;
+        margin: 0 auto !important;
+    }
+
+    /* thumbnails */
+    #productContainer div[style*="display:flex;justify-content:center;gap:15px"] {
+        gap: 16px !important;
+        margin-top: 20px !important;
+    }
+
+    #productContainer div[style*="display:flex;justify-content:center;gap:15px"] img {
+        width: 90px !important;
+        height: 90px !important;
+        border-radius: 14px !important;
+    }
+
+    /* loading spinner */
+    #productContainer .fa-spinner {
+        font-size: 65px !important;
+    }
+
+    #productContainer p:last-child {
+        font-size: 22px !important;
+    }
+
+    /* ── Password eye icon ── */
+    #authModal .auth-form .fa-eye,
+    #authModal .auth-form .fa-eye-slash {
+        font-size: 24px !important;
+        right: 18px !important;
+    }
+}
+
+/* ====== Extra Small Phones (400px and below) ====== */
+@media (max-width: 400px) {
+
+    /* ── Top Nav ── */
+    .top-nav {
+        padding: 14px 16px !important;
+    }
+
+    .top-nav i {
+        font-size: 34px !important;
+        margin: 0 10px !important;
+    }
+
+    .logo {
+        height: 42px !important;
+    }
+
+    /* ── Products ── */
+    .products {
+        gap: 25px !important;
+        padding: 15px !important;
+        margin-top: 75px !important;
+    }
+
+    .product img {
+        max-width: 180px !important;
+    }
+
+    .product h3 {
+        font-size: 17px !important;
+    }
+
+    .product p {
+        font-size: 19px !important;
+    }
+
+    /* ── Side Menu ── */
+    .side-menu {
+        width: 90% !important;
+        right: -90% !important;
+    }
+
+    .side-menu-header {
+        padding: 22px 24px !important;
+    }
+
+    .side-menu-header h2 {
+        font-size: 32px !important;
+    }
+
+    .side-menu-header i {
+        font-size: 36px !important;
+    }
+
+    .side-menu-body {
+        padding: 22px !important;
+    }
+
+    .menu-user-status {
+        padding: 22px 0 !important;
+        gap: 20px !important;
+    }
+
+    .menu-user-status i {
+        font-size: 70px !important;
+    }
+
+    #menuUserName {
+        font-size: 28px !important;
+    }
+
+    .menu-user-email {
+        font-size: 20px !important;
+    }
+
+    .menu-item {
+        font-size: 24px !important;
+        padding: 20px 22px !important;
+        gap: 20px !important;
+    }
+
+    .menu-item i {
+        font-size: 28px !important;
+        width: 34px !important;
+    }
+
+    /* ── Search ── */
+    .search-header {
+        padding: 20px !important;
+        gap: 16px !important;
+    }
+
+    .search-header i {
+        font-size: 32px !important;
+    }
+
+    .search-header input {
+        font-size: 20px !important;
+        padding: 16px !important;
+    }
+
+    .search-item {
+        padding: 16px !important;
+        gap: 16px !important;
+    }
+
+    .search-item img {
+        width: 70px !important;
+        height: 70px !important;
+    }
+
+    .search-item-info h3 {
+        font-size: 18px !important;
+    }
+
+    .search-item-price {
+        font-size: 18px !important;
+    }
+
+    /* ── Cart ── */
+    .cart-header {
+        padding: 18px !important;
+    }
+
+    .cart-header i {
+        font-size: 32px !important;
+    }
+
+    .cart-header h2 {
+        font-size: 22px !important;
+    }
+
+    .cart-item {
+        padding: 16px !important;
+        gap: 16px !important;
+    }
+
+    .cart-item img {
+        width: 75px !important;
+        height: 75px !important;
+    }
+
+    .cart-item-info h4 {
+        font-size: 17px !important;
+    }
+
+    .cart-item-info p {
+        font-size: 15px !important;
+    }
+
+    .cart-item-actions button {
+        width: 42px !important;
+        height: 42px !important;
+        font-size: 22px !important;
+    }
+
+    .cart-item-actions span {
+        font-size: 22px !important;
+        min-width: 34px !important;
+    }
+
+    .cart-total {
+        font-size: 22px !important;
+    }
+
+    .cart-total span {
+        font-size: 26px !important;
+    }
+
+    .checkout-btn {
+        font-size: 20px !important;
+        padding: 16px !important;
+    }
+
+    /* ── Modals ── */
+    .modal-content {
+        padding: 25px !important;
+    }
+
+    .modal-content h2 {
+        font-size: 22px !important;
+    }
+
+    .modal-content input {
+        font-size: 17px !important;
+        padding: 16px !important;
+    }
+
+    .modal-content button {
+        font-size: 18px !important;
+        padding: 16px !important;
+    }
+
+    .switch-form {
+        font-size: 16px !important;
+    }
+
+    .close-modal {
+        font-size: 30px !important;
+    }
+
+    /* ── Product Detail ── */
+    #productContainer {
+        margin-top: 75px !important;
+        padding: 10px !important;
+    }
+
+    #productContainer h1 {
+        font-size: 24px !important;
+    }
+
+    #productContainer div[style*="font-size: 32px"] {
+        font-size: 26px !important;
+    }
+
+    #productContainer div[style*="font-size: 16px"] {
+        font-size: 17px !important;
+        line-height: 2.2 !important;
+    }
+
+    #productContainer img#mainImage {
+        max-height: 350px !important;
+    }
+
+    #productContainer label {
+        font-size: 20px !important;
+    }
+
+    #productContainer select {
+        font-size: 18px !important;
+        padding: 16px 24px !important;
+        max-width: 220px !important;
+    }
+
+    #productContainer button[onclick*="addToCartFromDetail"] {
+        font-size: 20px !important;
+        padding: 18px 30px !important;
+        max-width: 300px !important;
+    }
+
+    #productContainer div[style*="display:flex;justify-content:center;gap:15px"] img {
+        width: 70px !important;
+        height: 70px !important;
+    }
+
+    /* ── Checkout Modal ── */
+    #checkoutModal textarea {
+        font-size: 17px !important;
+        padding: 16px !important;
+    }
+
+    .checkout-summary {
+        font-size: 16px !important;
+        padding: 16px !important;
+    }
+
+    .summary-total {
+        font-size: 19px !important;
+    }
+}
