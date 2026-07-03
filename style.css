@@ -1,4 +1,4 @@
-/* ── Base ─────────────────────────────────────────────────────────────────── */
+/* Base */
 
 body {
     margin: 0;
@@ -8,7 +8,7 @@ body {
 }
 
 
-/* ── Top Navigation Bar ───────────────────────────────────────────────────── */
+/* Top Navigation Bar */
 
 /* Fixed navbar pinned to the top of the viewport */
 .top-nav {
@@ -46,7 +46,7 @@ body {
 }
 
 
-/* ── Products Grid ────────────────────────────────────────────────────────── */
+/* Products Grid */
 
 /* 3-column grid with spacing below the fixed navbar */
 .products {
@@ -90,7 +90,7 @@ body {
 }
 
 
-/* ── Modals ───────────────────────────────────────────────────────────────── */
+/* Modals */
 
 /* Full-screen backdrop; hidden by default */
 .modal {
@@ -215,7 +215,7 @@ body {
 }
 
 
-/* ── Search Page ──────────────────────────────────────────────────────────── */
+/* Search Page */
 
 /* Full-screen search overlay; hidden by default */
 .search-page {
@@ -302,7 +302,7 @@ body {
 }
 
 
-/* ── Cart Page ────────────────────────────────────────────────────────────── */
+/* Cart Page */
 
 /* Full-screen cart overlay; hidden by default */
 .cart-page {
@@ -456,7 +456,7 @@ body {
 }
 
 
-/* ── Checkout Modal ───────────────────────────────────────────────────────── */
+/* Checkout Modal */
 
 #checkoutModal .modal-content { width: 360px; }
 
@@ -498,7 +498,7 @@ body {
 }
 
 
-/* ── Side Menu ────────────────────────────────────────────────────────────── */
+/* Side Menu */
 
 /* Slides in from the right; hidden off-screen by default */
 .side-menu {
@@ -625,7 +625,7 @@ hr {
 }
 
 
-/* ── Menu Overlay ─────────────────────────────────────────────────────────── */
+/* Menu Overlay */
 
 /* Semi-transparent backdrop behind the side menu */
 .menu-overlay {
@@ -676,7 +676,7 @@ hr {
 /* ====== Mobile Phones (768px and below) ====== */
 @media (max-width: 768px) {
 
-    /* ── Top Nav ── */
+    /* Top Nav */
     .top-nav {
         padding: 18px 20px !important;
     }
@@ -690,7 +690,7 @@ hr {
         height: 55px !important;
     }
 
-    /* ── Products ── */
+    /* Products */
     .products {
         grid-template-columns: repeat(2, 1fr) !important;
         gap: 35px !important;
@@ -716,7 +716,7 @@ hr {
         color: #c62828 !important;
     }
 
-    /* ── SIDE MENU ── */
+    /* SIDE MENU */
     .side-menu {
         width: 85% !important;
         right: -85% !important;
@@ -777,7 +777,7 @@ hr {
         margin: 25px 0 !important;
     }
 
-    /* ── Search ── */
+    /* Search */
     .search-header {
         padding: 25px !important;
         gap: 20px !important;
@@ -815,7 +815,7 @@ hr {
         font-size: 22px !important;
     }
 
-    /* ── Cart ── */
+    /* Cart */
     .cart-header {
         padding: 25px !important;
     }
@@ -893,7 +893,7 @@ hr {
         padding: 50px !important;
     }
 
-    /* ── Modals ── */
+    /* Modals */
     .modal-content {
         width: 92% !important;
         padding: 35px !important;
@@ -939,7 +939,7 @@ hr {
         font-size: 22px !important;
     }
 
-    /* ── Checkout Modal ── */
+    /* Checkout Modal */
     #checkoutModal .modal-content {
         width: 92% !important;
         padding: 30px !important;
@@ -960,7 +960,7 @@ hr {
         font-size: 22px !important;
     }
 
-    /* ── Product Detail Page ── */
+    /* Product Detail Page */
     #productContainer {
         margin-top: 85px !important;
         padding: 15px !important;
@@ -1041,7 +1041,7 @@ hr {
         font-size: 22px !important;
     }
 
-    /* ── Password eye icon ── */
+    /* Password eye icon */
     #authModal .auth-form .fa-eye,
     #authModal .auth-form .fa-eye-slash {
         font-size: 24px !important;
@@ -1052,7 +1052,7 @@ hr {
 /* ====== Extra Small Phones (400px and below) ====== */
 @media (max-width: 400px) {
 
-    /* ── Top Nav ── */
+    /* Top Nav */
     .top-nav {
         padding: 14px 16px !important;
     }
@@ -1066,7 +1066,7 @@ hr {
         height: 42px !important;
     }
 
-    /* ── Products ── */
+    /* Products */
     .products {
         gap: 25px !important;
         padding: 15px !important;
@@ -1085,7 +1085,7 @@ hr {
         font-size: 19px !important;
     }
 
-    /* ── Side Menu ── */
+    /* Side Menu */
     .side-menu {
         width: 90% !important;
         right: -90% !important;
@@ -1135,7 +1135,7 @@ hr {
         width: 34px !important;
     }
 
-    /* ── Search ── */
+    /* Search */
     .search-header {
         padding: 20px !important;
         gap: 16px !important;
@@ -1168,7 +1168,7 @@ hr {
         font-size: 18px !important;
     }
 
-    /* ── Cart ── */
+    /* Cart */
     .cart-header {
         padding: 18px !important;
     }
@@ -1223,7 +1223,7 @@ hr {
         padding: 16px !important;
     }
 
-    /* ── Modals ── */
+    /* Modals */
     .modal-content {
         padding: 25px !important;
     }
@@ -1250,7 +1250,7 @@ hr {
         font-size: 30px !important;
     }
 
-    /* ── Product Detail ── */
+    /* Product Detail */
     #productContainer {
         margin-top: 75px !important;
         padding: 10px !important;
@@ -1294,7 +1294,7 @@ hr {
         height: 70px !important;
     }
 
-    /* ── Checkout Modal ── */
+    /* Checkout Modal */
     #checkoutModal textarea {
         font-size: 17px !important;
         padding: 16px !important;

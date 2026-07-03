@@ -1,5 +1,4 @@
-// ── Product Data ─────────────────────────────────────────────────────────────
-
+// Product Data
 // All product details stored as an object keyed by product ID
 const productsData = {
     shoe1: { id: 'shoe1', name: 'Air Jordan 1 High OG Taxi', price: 28000000, priceText: '28,000,000 T', description: 'High-quality leather / High-cut form / Accurate color details / inspired by the color of a taxi / Wings logo on the wrist / Light and comfortable / For men and women', images: ['images/shoes1.png.jpg', 'images/shoes1(1).png.jpg', 'images/shoes1(2).png.jpg'] },
@@ -22,8 +21,7 @@ const productsList = Object.keys(productsData).map(key => ({
 }));
 
 
-// ── Cart ──────────────────────────────────────────────────────────────────────
-
+// Cart
 // Load cart from localStorage on page load
 let cart = JSON.parse(localStorage.getItem('cart')) || [];
 
@@ -85,8 +83,7 @@ function displayCart() {
 }
 
 
-// ── Checkout ──────────────────────────────────────────────────────────────────
-
+// Checkout
 // Open checkout modal, or redirect to login if user is not authenticated
 function checkout() {
     if (cart.length === 0) { alert('Your cart is empty!'); return; }
@@ -140,8 +137,7 @@ function submitOrder() {
 }
 
 
-// ── Auth Helpers ──────────────────────────────────────────────────────────────
-
+// Auth Helpers
 // Display an error message inside a given element
 function showError(elementId, message) {
     const el = document.getElementById(elementId);
@@ -255,8 +251,7 @@ function logoutUser() {
 }
 
 
-// ── DOM Events ────────────────────────────────────────────────────────────────
-
+// DOM Events
 // All DOM interactions wired up after the page has fully loaded
 document.addEventListener('DOMContentLoaded', function () {
     const cartPage = document.getElementById('cartPage');
@@ -325,8 +320,7 @@ function displayResults(container, products) {
 }
 
 
-// ── Password Visibility Toggle ────────────────────────────────────────────────
-
+// Password Visibility Toggle
 document.addEventListener('DOMContentLoaded', function() {
     // Toggle password visibility on the register form
     const toggleRegPass = document.getElementById('toggleRegPassword');
@@ -364,8 +358,7 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 
-// ── Side Menu ─────────────────────────────────────────────────────────────────
-
+// Side Menu
 // Slide the side menu in and lock scroll
 function openMenu() {
     var menu = document.getElementById('sideMenu');
