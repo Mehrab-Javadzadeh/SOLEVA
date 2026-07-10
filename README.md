@@ -65,7 +65,6 @@ soleva/
 
 ## 📱 Screenshots
 
-### 🏠 Home Page
 <div align="center">
   <img src="screenshots/portrait1.png" width="200" style="margin: 5px;">
   <img src="screenshots/portrait2.png" width="200" style="margin: 5px;">
