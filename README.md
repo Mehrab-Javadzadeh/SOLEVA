@@ -66,10 +66,10 @@ soleva/
 ## 📱 Screenshots
 
 ### 🏠 Home Page
-![Home Page](screenshots/portrait1.png)
-
-### 👟 Product Detail
-![Product Page](screenshots/portrait2.png)
+<div align="center">
+  <img src="screenshots/portrait1.png" width="200" style="margin: 5px;">
+  <img src="screenshots/portrait2.png" width="200" style="margin: 5px;">
+</div>
 
 ---
 
