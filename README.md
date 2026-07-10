@@ -63,9 +63,13 @@ soleva/
 
 ---
 
-## Screenshots
+## 📱 Screenshots
 
-> Add screenshots of your site here.
+### 🏠 Home Page
+![Home Page](screenshots/portrait1.png)
+
+### 👟 Product Detail
+![Product Page](screenshots/portrait2.png)
 
 ---
 
