@@ -68,7 +68,14 @@ soleva/
 <div align="center">
   <img src="screenshots/portrait1.png" width="200" style="margin: 5px;">
   <img src="screenshots/portrait2.png" width="200" style="margin: 5px;">
+  <img src="screenshots/portrait3.png" width="200" style="margin: 5px;">
+  <img src="screenshots/portrait4.png" width="200" style="margin: 5px;">
 </div>
+
+---
+
+## ⭐ Show Your Support
+If you found this project helpful, please give it a ⭐!
 
 ---
 
