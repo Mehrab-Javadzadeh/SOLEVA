@@ -2,7 +2,6 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Soleva | Product</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
@@ -10,7 +9,7 @@
 </head>
 <body>
 
-    <!-- top navigation -->
+    <!-- navbar -->
     <div class="top-nav">
         <div class="nav-left">
             <a href="index.html" style="color: white; text-decoration: none;">
@@ -18,7 +17,7 @@
             </a>
         </div>
         <div class="nav-center">
-            <img src="images/logo.png.jpg" class="logo" alt="Soleva Logo">
+            <img src="images/logo.png.jpg" class="logo" alt="Soleva Logo" id="themeToggle">
         </div>
         <div class="nav-right">
             <i class="fas fa-user" id="userIcon"></i>
@@ -27,7 +26,7 @@
         </div>
     </div>
 
-    <!-- side menu -->
+    <!-- menu sidebar -->
     <div id="sideMenu" class="side-menu">
         <div class="side-menu-header">
             <h2>Soleva</h2>
@@ -57,7 +56,7 @@
         </div>
     </div>
 
-    <!-- product detail area -->
+    <!-- product detail -->
     <div id="productContainer" style="margin-top: 90px; padding: 20px; min-height: 400px;">
         <div style="text-align: center; margin-top: 100px;">
             <i class="fas fa-spinner fa-pulse" style="font-size: 50px; color: #000;"></i>
@@ -65,7 +64,7 @@
         </div>
     </div>
 
-    <!-- cart overlay -->
+    <!-- cart panel -->
     <div id="cartPage" class="cart-page">
         <div class="cart-header">
             <i class="fas fa-arrow-right" id="closeCart"></i>
@@ -78,7 +77,7 @@
         </div>
     </div>
 
-    <!-- checkout modal -->
+    <!-- checkout -->
     <div id="checkoutModal" class="modal">
         <div class="modal-content">
             <span class="close-modal" id="closeCheckout">&times;</span>
@@ -93,7 +92,7 @@
         </div>
     </div>
 
-    <!-- auth modal -->
+    <!-- login / register modal -->
     <div id="authModal" class="modal">
         <div class="modal-content">
             <span class="close-modal" id="closeAuth">&times;</span>
@@ -131,13 +130,12 @@
     </div>
 
     <script>
-        // load product details
+        // load product detail
         function loadProduct() {
-            let params = new URLSearchParams(window.location.search);
-            let productId = params.get('id');
-            let container = document.getElementById('productContainer');
+            var params = new URLSearchParams(window.location.search);
+            var productId = params.get('id');
+            var container = document.getElementById('productContainer');
 
-            // wait for productsData from script.js
             if (typeof productsData === 'undefined') {
                 setTimeout(loadProduct, 100);
                 return;
@@ -145,18 +143,17 @@
 
             if (productId && productsData[productId]) {
                 window.currentProductId = productId;
-                let p = productsData[productId];
+                var p = productsData[productId];
 
-                // build thumbnail images
-                let thumbnails = '';
-                for (let i = 0; i < p.images.length; i++) {
-                    thumbnails += '<img src="' + p.images[i] + '" style="width:80px;height:80px;object-fit:cover;border-radius:8px;cursor:pointer;border:2px solid transparent;transition:0.3s;" onmouseover="this.style.borderColor=\'black\'" onmouseout="this.style.borderColor=\'transparent\'" onclick="document.getElementById(\'mainImage\').src=\'' + p.images[i] + '\'">';
+                var thumbs = '';
+                for (var i = 0; i < p.images.length; i++) {
+                    thumbs += '<img src="' + p.images[i] + '" style="width:80px;height:80px;object-fit:cover;border-radius:8px;cursor:pointer;border:2px solid transparent;transition:0.3s;" onmouseover="this.style.borderColor=\'black\'" onmouseout="this.style.borderColor=\'transparent\'" onclick="document.getElementById(\'mainImage\').src=\'' + p.images[i] + '\'">';
                 }
 
-                container.innerHTML = 
+                container.innerHTML =
                     '<div style="background:#f5f5f5;padding:60px 20px 30px;text-align:center;">' +
                         '<img id="mainImage" src="' + p.images[0] + '" style="width:400px;height:400px;object-fit:cover;border-radius:15px;box-shadow:0 5px 20px rgba(0,0,0,0.2);">' +
-                        '<div style="display:flex;justify-content:center;gap:15px;flex-wrap:wrap;margin-top:20px;">' + thumbnails + '</div>' +
+                        '<div style="display:flex;justify-content:center;gap:15px;flex-wrap:wrap;margin-top:20px;">' + thumbs + '</div>' +
                     '</div>' +
                     '<div style="max-width:800px;margin:0 auto;padding:30px;text-align:center;">' +
                         '<h1 style="font-size:28px;margin-bottom:15px;color:#000;">' + p.name + '</h1>' +
@@ -173,7 +170,7 @@
                         '</button>' +
                     '</div>';
             } else {
-                container.innerHTML = 
+                container.innerHTML =
                     '<div style="text-align:center;margin-top:100px;">' +
                         '<i class="fas fa-exclamation-triangle" style="font-size:80px;color:#c62828;"></i>' +
                         '<h1 style="margin-top:30px;">❌ Product Not Found</h1>' +
@@ -184,7 +181,7 @@
         }
 
         function addToCartFromDetail() {
-            let sizeSelect = document.getElementById('sizeSelect');
+            var sizeSelect = document.getElementById('sizeSelect');
             if (sizeSelect && window.currentProductId && typeof addToCart !== 'undefined') {
                 if (addToCart(window.currentProductId, sizeSelect.value)) {
                     alert('✅ Product added to cart');
@@ -194,18 +191,18 @@
             }
         }
 
-        // start loading product
+        // start loading
         if (document.readyState === 'loading') {
             document.addEventListener('DOMContentLoaded', loadProduct);
         } else {
             loadProduct();
         }
 
-        // menu icon click handler
+        // fix menu on this page
         document.addEventListener('DOMContentLoaded', function() {
-            let menuIcon = document.getElementById('menuIcon');
-            if (menuIcon) {
-                menuIcon.addEventListener('click', function(e) {
+            var menuBtn = document.getElementById('menuIcon');
+            if (menuBtn) {
+                menuBtn.addEventListener('click', function(e) {
                     e.preventDefault();
                     e.stopPropagation();
                     if (typeof openMenu === 'function') {
