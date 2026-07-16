@@ -1,6 +1,8 @@
-// Product Data
-// All product details stored as an object keyed by product ID
-const productsData = {
+// ============================================================
+// products
+// ============================================================
+
+var productsData = {
     shoe1: { id: 'shoe1', name: 'Air Jordan 1 High OG Taxi', price: 28000000, priceText: '28,000,000 T', description: 'High-quality leather / High-cut form / Accurate color details / inspired by the color of a taxi / Wings logo on the wrist / Light and comfortable / For men and women', images: ['images/shoes1.png.jpg', 'images/shoes1(1).png.jpg', 'images/shoes1(2).png.jpg'] },
     shoe2: { id: 'shoe2', name: 'Air Jordan 1 High OG White Cement', price: 14900000, priceText: '14,900,000 T', description: 'Outsole with pivot circle pattern / High-cut form / High-quality leather / Light and comfortable / For men and women', images: ['images/shoes2.png.jpg', 'images/shoes2(1).png.jpg', 'images/shoes2(2).png.jpg'] },
     shoe3: { id: 'shoe3', name: 'Jordan 1 mid Rebellionaire', price: 12900000, priceText: '12,900,000 T', description: 'Air cushioning in the sole / High-quality leather / High-cut form / Light and comfortable / For men and women', images: ['images/shoes3.png.jpg', 'images/shoes3(1).png.jpg', 'images/shoes3(2).png.jpg'] },
@@ -12,150 +14,219 @@ const productsData = {
     shoe9: { id: 'shoe9', name: 'Air Force 1 Undefeated Beige Black', price: 6470000, priceText: '6,470,000 T', description: 'Perfume scent / Light and comfortable / Antibacterial and anti-oder / Synthetic leather / For men and women', images: ['images/shoes9.png.jpg', 'images/shoes9(1).png.jpg', 'images/shoes9(2).png.jpg'] }
 };
 
-// Flat array used for search results and listings
-const productsList = Object.keys(productsData).map(key => ({
-    id: productsData[key].id,
-    name: productsData[key].name,
-    price: productsData[key].priceText,
-    image: productsData[key].images[0]
-}));
+var productsList = Object.keys(productsData).map(function(key) {
+    return {
+        id: productsData[key].id,
+        name: productsData[key].name,
+        price: productsData[key].priceText,
+        image: productsData[key].images[0]
+    };
+});
 
 
-// Cart
-// Load cart from localStorage on page load
-let cart = JSON.parse(localStorage.getItem('cart')) || [];
+// ============================================================
+// cart
+// ============================================================
 
-// Save current cart state to localStorage
-function saveCart() { localStorage.setItem('cart', JSON.stringify(cart)); }
+var cart = JSON.parse(localStorage.getItem('cart')) || [];
 
-// Add a product to the cart; increase quantity if it already exists
-function addToCart(productId, size, quantity = 1) {
-    const product = productsData[productId];
+function saveCart() {
+    localStorage.setItem('cart', JSON.stringify(cart));
+}
+
+function addToCart(productId, size, quantity) {
+    quantity = quantity || 1;
+    var product = productsData[productId];
     if (!product) return false;
-    const existing = cart.find(item => item.id === productId && item.size === size);
-    if (existing) { existing.quantity += quantity; }
-    else { cart.push({ id: productId, name: product.name, price: product.priceText, priceValue: product.price, size, quantity, image: product.images[0] }); }
+
+    var existing = cart.find(function(item) {
+        return item.id === productId && item.size === size;
+    });
+
+    if (existing) {
+        existing.quantity += quantity;
+    } else {
+        cart.push({
+            id: productId,
+            name: product.name,
+            price: product.priceText,
+            priceValue: product.price,
+            size: size,
+            quantity: quantity,
+            image: product.images[0]
+        });
+    }
+
     saveCart();
     return true;
 }
 
-// Remove an item by its index in the cart array
-function removeFromCart(index) { cart.splice(index, 1); saveCart(); displayCart(); }
-
-// Update item quantity; remove the item if quantity drops below 1
-function updateQuantity(index, newQuantity) {
-    if (newQuantity < 1) { removeFromCart(index); return; }
-    cart[index].quantity = newQuantity; saveCart(); displayCart();
+function removeFromCart(index) {
+    cart.splice(index, 1);
+    saveCart();
+    displayCart();
 }
 
-// Calculate the total price of all cart items
-function getCartTotal() { return cart.reduce((sum, item) => sum + (item.priceValue * item.quantity), 0); }
+function updateQuantity(index, newQuantity) {
+    if (newQuantity < 1) {
+        removeFromCart(index);
+        return;
+    }
+    cart[index].quantity = newQuantity;
+    saveCart();
+    displayCart();
+}
 
-// Render cart items into the cart page UI
+function getCartTotal() {
+    var total = 0;
+    for (var i = 0; i < cart.length; i++) {
+        total += cart[i].priceValue * cart[i].quantity;
+    }
+    return total;
+}
+
 function displayCart() {
-    const cartContainer = document.getElementById('cartItems');
-    if (!cartContainer) return;
+    var container = document.getElementById('cartItems');
+    if (!container) return;
 
     if (cart.length === 0) {
-        cartContainer.innerHTML = '<div class="empty-cart">🛒 Your cart is empty</div>';
+        container.innerHTML = '<div class="empty-cart">🛒 Your cart is empty</div>';
         if (document.getElementById('cartTotal')) document.getElementById('cartTotal').innerText = '0';
         return;
     }
 
-    // Build HTML for each cart item
-    cartContainer.innerHTML = cart.map((item, index) => `
-        <div class="cart-item">
-            <img src="${item.image}">
-            <div class="cart-item-info">
-                <h4>${item.name}</h4>
-                <p>Size: ${item.size}</p>
-                <p>Price: ${item.price}</p>
-            </div>
-            <div class="cart-item-actions">
-                <button onclick="updateQuantity(${index}, ${item.quantity - 1})">-</button>
-                <span>${item.quantity}</span>
-                <button onclick="updateQuantity(${index}, ${item.quantity + 1})">+</button>
-                <button class="remove-btn" onclick="removeFromCart(${index})"><i class="fas fa-trash"></i></button>
-            </div>
-        </div>`).join('');
+    var html = '';
+    for (var i = 0; i < cart.length; i++) {
+        var item = cart[i];
+        html +=
+            '<div class="cart-item">' +
+                '<img src="' + item.image + '">' +
+                '<div class="cart-item-info">' +
+                    '<h4>' + item.name + '</h4>' +
+                    '<p>Size: ' + item.size + '</p>' +
+                    '<p>Price: ' + item.price + '</p>' +
+                '</div>' +
+                '<div class="cart-item-actions">' +
+                    '<button onclick="updateQuantity(' + i + ', ' + (item.quantity - 1) + ')">-</button>' +
+                    '<span>' + item.quantity + '</span>' +
+                    '<button onclick="updateQuantity(' + i + ', ' + (item.quantity + 1) + ')">+</button>' +
+                    '<button class="remove-btn" onclick="removeFromCart(' + i + ')"><i class="fas fa-trash"></i></button>' +
+                '</div>' +
+            '</div>';
+    }
 
-    if (document.getElementById('cartTotal')) document.getElementById('cartTotal').innerText = getCartTotal().toLocaleString();
+    container.innerHTML = html;
+    if (document.getElementById('cartTotal')) {
+        document.getElementById('cartTotal').innerText = getCartTotal().toLocaleString();
+    }
 }
 
 
-// Checkout
-// Open checkout modal, or redirect to login if user is not authenticated
-function checkout() {
-    if (cart.length === 0) { alert('Your cart is empty!'); return; }
+// ============================================================
+// checkout
+// ============================================================
 
-    const currentUser = localStorage.getItem('currentUser');
+function checkout() {
+    if (cart.length === 0) {
+        alert('Your cart is empty!');
+        return;
+    }
+
+    var currentUser = localStorage.getItem('currentUser');
     if (!currentUser) {
-        // Hide cart and prompt login
-        const cartPage = document.getElementById('cartPage');
+        var cartPage = document.getElementById('cartPage');
         if (cartPage) cartPage.style.display = 'none';
         document.body.style.overflow = 'auto';
-        const modal = document.getElementById('authModal');
+
+        var modal = document.getElementById('authModal');
         if (modal) {
             modal.style.display = 'flex';
             checkSession();
-            setTimeout(() => showError('registerError', 'Please login or register to complete your purchase.'), 100);
+            setTimeout(function() {
+                showError('registerError', 'Please login or register to complete your purchase.');
+            }, 100);
         }
         return;
     }
 
-    // Show checkout modal with order summary
-    const cartPage = document.getElementById('cartPage');
+    var cartPage = document.getElementById('cartPage');
     if (cartPage) cartPage.style.display = 'none';
-    const checkoutModal = document.getElementById('checkoutModal');
+
+    var checkoutModal = document.getElementById('checkoutModal');
     if (checkoutModal) {
         document.getElementById('checkoutPhone').value = '';
         document.getElementById('checkoutAddress').value = '';
         document.getElementById('checkoutError').style.display = 'none';
-        const itemLines = cart.map(item => `<span>${item.name} × ${item.quantity} (Size ${item.size})</span>`).join('');
-        document.getElementById('checkoutSummary').innerHTML = `<div class="summary-items">${itemLines}</div><div class="summary-total">Total: <strong>${getCartTotal().toLocaleString()} T</strong></div>`;
+
+        var itemLines = '';
+        for (var i = 0; i < cart.length; i++) {
+            itemLines += '<span>' + cart[i].name + ' × ' + cart[i].quantity + ' (Size ' + cart[i].size + ')</span>';
+        }
+
+        document.getElementById('checkoutSummary').innerHTML =
+            '<div class="summary-items">' + itemLines + '</div>' +
+            '<div class="summary-total">Total: <strong>' + getCartTotal().toLocaleString() + ' T</strong></div>';
+
         checkoutModal.style.display = 'flex';
     }
 }
 
-// Validate Iranian mobile number format (e.g. 09121234567)
-function isValidIranPhone(phone) { return /^09[0-9]{9}$/.test(phone); }
+function isValidIranPhone(phone) {
+    return /^09[0-9]{9}$/.test(phone);
+}
 
-// Validate and submit the order
 function submitOrder() {
-    const phone = document.getElementById('checkoutPhone').value.trim();
-    const address = document.getElementById('checkoutAddress').value.trim();
-    if (!phone || !address) { showError('checkoutError', 'Please fill in both phone number and address.'); return; }
-    if (!isValidIranPhone(phone)) { showError('checkoutError', 'Please enter a valid Iranian mobile number (e.g. 09121234567).'); return; }
-    if (address.length < 10) { showError('checkoutError', 'Please enter a more complete address.'); return; }
+    var phone = document.getElementById('checkoutPhone').value.trim();
+    var address = document.getElementById('checkoutAddress').value.trim();
+
+    if (!phone || !address) {
+        showError('checkoutError', 'Please fill in both phone number and address.');
+        return;
+    }
+
+    if (!isValidIranPhone(phone)) {
+        showError('checkoutError', 'Please enter a valid Iranian mobile number (e.g. 09121234567).');
+        return;
+    }
+
+    if (address.length < 10) {
+        showError('checkoutError', 'Please enter a more complete address.');
+        return;
+    }
 
     alert('✅ Order placed!\nTotal: ' + getCartTotal().toLocaleString() + ' T\n📞 ' + phone + '\n📍 ' + address);
 
-    // Clear cart after successful order
-    cart = []; saveCart(); displayCart();
+    cart = [];
+    saveCart();
+    displayCart();
     document.getElementById('checkoutModal').style.display = 'none';
     document.body.style.overflow = 'auto';
 }
 
 
-// Auth Helpers
-// Display an error message inside a given element
+// ============================================================
+// auth helpers
+// ============================================================
+
 function showError(elementId, message) {
-    const el = document.getElementById(elementId);
-    if (el) { el.innerText = message; el.style.display = 'block'; }
+    var el = document.getElementById(elementId);
+    if (el) {
+        el.innerText = message;
+        el.style.display = 'block';
+    }
 }
 
-// Hide all auth error messages
 function clearErrors() {
-    const regErr = document.getElementById('registerError');
-    const logErr = document.getElementById('loginError');
+    var regErr = document.getElementById('registerError');
+    var logErr = document.getElementById('loginError');
     if (regErr) regErr.style.display = 'none';
     if (logErr) logErr.style.display = 'none';
 }
 
-// Switch between login and register forms
 function toggleAuth(type) {
-    const registerForm = document.getElementById('registerForm');
-    const loginForm = document.getElementById('loginForm');
+    var registerForm = document.getElementById('registerForm');
+    var loginForm = document.getElementById('loginForm');
+
     if (type === 'login') {
         if (registerForm) registerForm.style.display = 'none';
         if (loginForm) loginForm.style.display = 'flex';
@@ -163,28 +234,25 @@ function toggleAuth(type) {
         if (loginForm) loginForm.style.display = 'none';
         if (registerForm) registerForm.style.display = 'flex';
     }
+
     clearErrors();
 }
 
-// Update the auth modal UI based on whether a user is logged in
 function checkSession() {
-    const currentUser = localStorage.getItem('currentUser');
-    const registerForm = document.getElementById('registerForm');
-    const loginForm = document.getElementById('loginForm');
-    const profileView = document.getElementById('profileView');
-    const userEmailDisplay = document.getElementById('userEmailDisplay');
-    const userIconEl = document.getElementById('userIcon');
-    const authModal = document.getElementById('authModal');
+    var currentUser = localStorage.getItem('currentUser');
+    var registerForm = document.getElementById('registerForm');
+    var loginForm = document.getElementById('loginForm');
+    var profileView = document.getElementById('profileView');
+    var userEmailDisplay = document.getElementById('userEmailDisplay');
+    var userIconEl = document.getElementById('userIcon');
 
     if (currentUser) {
-        // Show profile view for logged-in users
         if (registerForm) registerForm.style.display = 'none';
         if (loginForm) loginForm.style.display = 'none';
         if (profileView) profileView.style.display = 'flex';
         if (userEmailDisplay) userEmailDisplay.innerText = currentUser;
         if (userIconEl) userIconEl.style.color = '#28a745';
     } else {
-        // Show register form for guests
         if (profileView) profileView.style.display = 'none';
         if (registerForm) registerForm.style.display = 'flex';
         if (loginForm) loginForm.style.display = 'none';
@@ -192,139 +260,255 @@ function checkSession() {
     }
 }
 
-// Basic email format validation using regex
-function isValidEmail(email) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email); }
+function isValidEmail(email) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
 
-// Register a new user and save to localStorage
 function registerUser() {
-    const emailInput = document.getElementById('regEmail');
-    const passwordInput = document.getElementById('regPassword');
+    var emailInput = document.getElementById('regEmail');
+    var passwordInput = document.getElementById('regPassword');
     if (!emailInput || !passwordInput) return;
-    const email = emailInput.value.trim();
-    const password = passwordInput.value;
-    if (!email || !password) return showError('registerError', 'Please fill in all fields.');
-    if (!isValidEmail(email)) return showError('registerError', 'Please enter a valid email address.');
-    if (password.length < 6) return showError('registerError', 'Password must be at least 6 characters.');
-    let users = JSON.parse(localStorage.getItem('users')) || [];
-    // Prevent duplicate accounts
-    if (users.some(u => u.email.toLowerCase() === email.toLowerCase())) return showError('registerError', 'An account with this email already exists.');
-    users.push({ email, password });
+
+    var email = emailInput.value.trim();
+    var password = passwordInput.value;
+
+    if (!email || !password) {
+        showError('registerError', 'Please fill in all fields.');
+        return;
+    }
+
+    if (!isValidEmail(email)) {
+        showError('registerError', 'Please enter a valid email address.');
+        return;
+    }
+
+    if (password.length < 6) {
+        showError('registerError', 'Password must be at least 6 characters.');
+        return;
+    }
+
+    var users = JSON.parse(localStorage.getItem('users')) || [];
+
+    for (var i = 0; i < users.length; i++) {
+        if (users[i].email.toLowerCase() === email.toLowerCase()) {
+            showError('registerError', 'An account with this email already exists.');
+            return;
+        }
+    }
+
+    users.push({ email: email, password: password });
     localStorage.setItem('users', JSON.stringify(users));
     startSession(email);
 }
 
-// Validate credentials and log in the user
 function loginUser() {
-    const emailInput = document.getElementById('logEmail');
-    const passwordInput = document.getElementById('logPassword');
+    var emailInput = document.getElementById('logEmail');
+    var passwordInput = document.getElementById('logPassword');
     if (!emailInput || !passwordInput) return;
-    const email = emailInput.value.trim();
-    const password = passwordInput.value;
-    if (!email || !password) return showError('loginError', 'Please enter your email and password.');
-    if (!isValidEmail(email)) return showError('loginError', 'Please enter a valid email address.');
-    let users = JSON.parse(localStorage.getItem('users')) || [];
-    const valid = users.find(u => u.email.toLowerCase() === email.toLowerCase() && u.password === password);
-    if (valid) startSession(email);
-    else showError('loginError', 'Incorrect email or password.');
+
+    var email = emailInput.value.trim();
+    var password = passwordInput.value;
+
+    if (!email || !password) {
+        showError('loginError', 'Please enter your email and password.');
+        return;
+    }
+
+    if (!isValidEmail(email)) {
+        showError('loginError', 'Please enter a valid email address.');
+        return;
+    }
+
+    var users = JSON.parse(localStorage.getItem('users')) || [];
+    var valid = null;
+
+    for (var i = 0; i < users.length; i++) {
+        if (users[i].email.toLowerCase() === email.toLowerCase() && users[i].password === password) {
+            valid = users[i];
+            break;
+        }
+    }
+
+    if (valid) {
+        startSession(email);
+    } else {
+        showError('loginError', 'Incorrect email or password.');
+    }
 }
 
-// Save session, close modal, and update UI
 function startSession(email) {
     localStorage.setItem('currentUser', email);
     checkSession();
-    const authModal = document.getElementById('authModal');
+    var authModal = document.getElementById('authModal');
     if (authModal) authModal.style.display = 'none';
     updateMenuUserStatus();
 }
 
-// Clear session and reset all auth form fields
 function logoutUser() {
     localStorage.removeItem('currentUser');
     checkSession();
-    if (document.getElementById('logEmail')) document.getElementById('logEmail').value = '';
-    if (document.getElementById('logPassword')) document.getElementById('logPassword').value = '';
-    if (document.getElementById('regEmail')) document.getElementById('regEmail').value = '';
-    if (document.getElementById('regPassword')) document.getElementById('regPassword').value = '';
-    const authModal = document.getElementById('authModal');
+
+    var logEmail = document.getElementById('logEmail');
+    var logPassword = document.getElementById('logPassword');
+    var regEmail = document.getElementById('regEmail');
+    var regPassword = document.getElementById('regPassword');
+
+    if (logEmail) logEmail.value = '';
+    if (logPassword) logPassword.value = '';
+    if (regEmail) regEmail.value = '';
+    if (regPassword) regPassword.value = '';
+
+    var authModal = document.getElementById('authModal');
     if (authModal) authModal.style.display = 'none';
     updateMenuUserStatus();
 }
 
 
-// DOM Events
-// All DOM interactions wired up after the page has fully loaded
-document.addEventListener('DOMContentLoaded', function () {
-    const cartPage = document.getElementById('cartPage');
-    const cartIcon = document.getElementById('cartIcon');
-    const closeCart = document.getElementById('closeCart');
-    const closeCheckout = document.getElementById('closeCheckout');
-    const authModal = document.getElementById('authModal');
-    const userIcon = document.getElementById('userIcon');
-    const closeAuth = document.getElementById('closeAuth');
-    const searchPage = document.getElementById('searchPage');
-    const searchIcon = document.getElementById('searchIcon');
-    const closeSearch = document.getElementById('closeSearch');
-    const searchInput = document.getElementById('searchInput');
-    const searchResults = document.getElementById('searchResults');
+// ============================================================
+// dom events
+// ============================================================
 
-    // Cart open/close
-    if (cartIcon) cartIcon.onclick = function () { displayCart(); if (cartPage) cartPage.style.display = 'block'; document.body.style.overflow = 'hidden'; };
-    if (closeCart) closeCart.onclick = function () { if (cartPage) cartPage.style.display = 'none'; document.body.style.overflow = 'auto'; };
-    if (closeCheckout) closeCheckout.onclick = function () { document.getElementById('checkoutModal').style.display = 'none'; document.body.style.overflow = 'auto'; };
+document.addEventListener('DOMContentLoaded', function() {
+    var cartPage = document.getElementById('cartPage');
+    var cartIcon = document.getElementById('cartIcon');
+    var closeCart = document.getElementById('closeCart');
+    var closeCheckout = document.getElementById('closeCheckout');
+    var authModal = document.getElementById('authModal');
+    var userIcon = document.getElementById('userIcon');
+    var closeAuth = document.getElementById('closeAuth');
+    var searchPage = document.getElementById('searchPage');
+    var searchIcon = document.getElementById('searchIcon');
+    var closeSearch = document.getElementById('closeSearch');
+    var searchInput = document.getElementById('searchInput');
+    var searchResults = document.getElementById('searchResults');
 
-    // Auth modal open/close
-    if (userIcon) userIcon.onclick = function () { if (authModal) authModal.style.display = 'flex'; checkSession(); };
-    if (closeAuth) closeAuth.onclick = function () { if (authModal) authModal.style.display = 'none'; };
+    // cart
+    if (cartIcon) {
+        cartIcon.onclick = function() {
+            displayCart();
+            if (cartPage) cartPage.style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        };
+    }
 
-    // Search open/close and live filtering
-    if (searchIcon) searchIcon.onclick = function () { if (searchPage) searchPage.style.display = 'block'; if (searchInput) searchInput.focus(); displayResults(searchResults, productsList); };
-    if (closeSearch) closeSearch.onclick = function () { if (searchPage) searchPage.style.display = 'none'; if (searchInput) searchInput.value = ''; };
+    if (closeCart) {
+        closeCart.onclick = function() {
+            if (cartPage) cartPage.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        };
+    }
+
+    if (closeCheckout) {
+        closeCheckout.onclick = function() {
+            document.getElementById('checkoutModal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        };
+    }
+
+    // auth
+    if (userIcon) {
+        userIcon.onclick = function() {
+            if (authModal) authModal.style.display = 'flex';
+            checkSession();
+        };
+    }
+
+    if (closeAuth) {
+        closeAuth.onclick = function() {
+            if (authModal) authModal.style.display = 'none';
+        };
+    }
+
+    // search
+    if (searchIcon) {
+        searchIcon.onclick = function() {
+            if (searchPage) searchPage.style.display = 'block';
+            if (searchInput) searchInput.focus();
+            displayResults(searchResults, productsList);
+        };
+    }
+
+    if (closeSearch) {
+        closeSearch.onclick = function() {
+            if (searchPage) searchPage.style.display = 'none';
+            if (searchInput) searchInput.value = '';
+        };
+    }
+
     if (searchInput) {
-        searchInput.addEventListener('input', function () {
-            const query = this.value.toLowerCase().trim();
-            displayResults(searchResults, query ? productsList.filter(p => p.name.toLowerCase().includes(query)) : productsList);
+        searchInput.addEventListener('input', function() {
+            var query = this.value.toLowerCase().trim();
+            var filtered = query ? productsList.filter(function(p) {
+                return p.name.toLowerCase().includes(query);
+            }) : productsList;
+            displayResults(searchResults, filtered);
         });
     }
 
-    // Close any open overlay with the Escape key
-    document.addEventListener('keydown', function (e) {
+    // escape key
+    document.addEventListener('keydown', function(e) {
         if (e.key === 'Escape') {
-            if (searchPage && searchPage.style.display === 'block') { searchPage.style.display = 'none'; if (searchInput) searchInput.value = ''; }
-            if (authModal && authModal.style.display === 'flex') authModal.style.display = 'none';
-            const checkoutModal = document.getElementById('checkoutModal');
-            if (checkoutModal && checkoutModal.style.display === 'flex') { checkoutModal.style.display = 'none'; document.body.style.overflow = 'auto'; }
+            if (searchPage && searchPage.style.display === 'block') {
+                searchPage.style.display = 'none';
+                if (searchInput) searchInput.value = '';
+            }
+            if (authModal && authModal.style.display === 'flex') {
+                authModal.style.display = 'none';
+            }
+            var checkoutModal = document.getElementById('checkoutModal');
+            if (checkoutModal && checkoutModal.style.display === 'flex') {
+                checkoutModal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
         }
     });
 
-    // Close modal when clicking on the backdrop
-    window.onclick = function (event) {
+    // click outside
+    window.onclick = function(event) {
         if (event.target == authModal) authModal.style.display = 'none';
-        if (event.target == cartPage) { cartPage.style.display = 'none'; document.body.style.overflow = 'auto'; }
+        if (event.target == cartPage) {
+            cartPage.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
     };
 
     checkSession();
+    loadTheme();
 });
 
-// Render search result items into the results container
 function displayResults(container, products) {
     if (!container) return;
-    if (products.length === 0) { container.innerHTML = '<div class="no-results">No results found</div>'; return; }
-    container.innerHTML = products.map(p => `
-        <div class="search-item" onclick="window.location.href='product.html?id=${p.id}'">
-            <img src="${p.image}" alt="${p.name}">
-            <div class="search-item-info">
-                <h3>${p.name}</h3>
-                <div class="search-item-price">${p.price}</div>
-            </div>
-        </div>`).join('');
+
+    if (products.length === 0) {
+        container.innerHTML = '<div class="no-results">No results found</div>';
+        return;
+    }
+
+    var html = '';
+    for (var i = 0; i < products.length; i++) {
+        var p = products[i];
+        html +=
+            '<div class="search-item" onclick="window.location.href=\'product.html?id=' + p.id + '\'">' +
+                '<img src="' + p.image + '" alt="' + p.name + '">' +
+                '<div class="search-item-info">' +
+                    '<h3>' + p.name + '</h3>' +
+                    '<div class="search-item-price">' + p.price + '</div>' +
+                '</div>' +
+            '</div>';
+    }
+
+    container.innerHTML = html;
 }
 
 
-// Password Visibility Toggle
+// ============================================================
+// password toggle
+// ============================================================
+
 document.addEventListener('DOMContentLoaded', function() {
-    // Toggle password visibility on the register form
-    const toggleRegPass = document.getElementById('toggleRegPassword');
-    const regPassInput = document.getElementById('regPassword');
+    var toggleRegPass = document.getElementById('toggleRegPassword');
+    var regPassInput = document.getElementById('regPassword');
+
     if (toggleRegPass && regPassInput) {
         toggleRegPass.addEventListener('click', function() {
             if (regPassInput.type === 'password') {
@@ -339,9 +523,9 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Toggle password visibility on the login form
-    const toggleLogPass = document.getElementById('toggleLogPassword');
-    const logPassInput = document.getElementById('logPassword');
+    var toggleLogPass = document.getElementById('toggleLogPassword');
+    var logPassInput = document.getElementById('logPassword');
+
     if (toggleLogPass && logPassInput) {
         toggleLogPass.addEventListener('click', function() {
             if (logPassInput.type === 'password') {
@@ -358,33 +542,35 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 
-// Side Menu
-// Slide the side menu in and lock scroll
+// ============================================================
+// side menu
+// ============================================================
+
 function openMenu() {
     var menu = document.getElementById('sideMenu');
     var overlay = document.getElementById('menuOverlay');
+
     if (menu) {
         menu.classList.add('open');
         document.body.style.overflow = 'hidden';
-        if (typeof updateMenuUserStatus === 'function') {
-            updateMenuUserStatus();
-        }
+        updateMenuUserStatus();
     }
+
     if (overlay) overlay.classList.add('show');
 }
 
-// Slide the side menu out and restore scroll
 function closeMenu() {
     var menu = document.getElementById('sideMenu');
     var overlay = document.getElementById('menuOverlay');
+
     if (menu) {
         menu.classList.remove('open');
         document.body.style.overflow = 'auto';
     }
+
     if (overlay) overlay.classList.remove('show');
 }
 
-// Sync menu user info with the current session state
 function updateMenuUserStatus() {
     var currentUser = localStorage.getItem('currentUser');
     var userName = document.getElementById('menuUserName');
@@ -411,9 +597,7 @@ function updateMenuUserStatus() {
     }
 }
 
-// Open auth modal from the side menu (closes menu first)
 function openAuthFromMenu() {
-    var currentUser = localStorage.getItem('currentUser');
     closeMenu();
     setTimeout(function() {
         var authModal = document.getElementById('authModal');
@@ -424,7 +608,6 @@ function openAuthFromMenu() {
     }, 300);
 }
 
-// Confirm logout from the side menu
 function logoutFromMenu() {
     if (confirm('Are you sure you want to logout?')) {
         logoutUser();
@@ -435,7 +618,6 @@ function logoutFromMenu() {
     }
 }
 
-// Open cart page from the side menu
 function openCartFromMenu() {
     closeMenu();
     setTimeout(function() {
@@ -448,12 +630,10 @@ function openCartFromMenu() {
     }, 300);
 }
 
-// Wire up side menu toggle and overlay events after DOM is ready
 document.addEventListener('DOMContentLoaded', function() {
     var menuIcon = document.getElementById('menuIcon');
     var closeMenuBtn = document.getElementById('closeMenu');
 
-    // Dynamically create overlay if it doesn't exist in the HTML
     if (!document.getElementById('menuOverlay')) {
         var overlay = document.createElement('div');
         overlay.id = 'menuOverlay';
@@ -462,7 +642,6 @@ document.addEventListener('DOMContentLoaded', function() {
         overlay.addEventListener('click', closeMenu);
     }
 
-    // Clone the menu icon to remove any duplicate listeners
     if (menuIcon) {
         var newMenuIcon = menuIcon.cloneNode(true);
         menuIcon.parentNode.replaceChild(newMenuIcon, menuIcon);
@@ -477,7 +656,6 @@ document.addEventListener('DOMContentLoaded', function() {
         closeMenuBtn.addEventListener('click', closeMenu);
     }
 
-    // Close side menu with Escape key
     document.addEventListener('keydown', function(e) {
         if (e.key === 'Escape') {
             var menu = document.getElementById('sideMenu');
@@ -487,7 +665,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Watch the auth modal and refresh menu status when it closes
     var authModal = document.getElementById('authModal');
     if (authModal) {
         var observer = new MutationObserver(function() {
@@ -498,6 +675,36 @@ document.addEventListener('DOMContentLoaded', function() {
         observer.observe(authModal, { attributes: true, attributeFilter: ['style'] });
     }
 
-    // Set initial menu user state
     updateMenuUserStatus();
+});
+
+
+// ============================================================
+// dark / light mode toggle
+// ============================================================
+
+function toggleTheme() {
+    var body = document.body;
+    body.classList.toggle('dark-mode');
+
+    if (body.classList.contains('dark-mode')) {
+        localStorage.setItem('theme', 'dark');
+    } else {
+        localStorage.setItem('theme', 'light');
+    }
+}
+
+function loadTheme() {
+    var savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'dark') {
+        document.body.classList.add('dark-mode');
+    }
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    var logo = document.getElementById('themeToggle');
+    if (logo) {
+        logo.style.cursor = 'pointer';
+        logo.addEventListener('click', toggleTheme);
+    }
 });
