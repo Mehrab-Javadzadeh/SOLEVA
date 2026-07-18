@@ -79,6 +79,12 @@ If you found this project helpful, please give it a ⭐!
 
 ---
 
+👨‍💻 Author
+Mehrab Javadzadeh 
+Amirmahdi Khodabandelou
+
+---
+
 ## License
 
 This project is for personal/educational use.
