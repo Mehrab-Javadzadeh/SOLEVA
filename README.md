@@ -79,9 +79,9 @@ If you found this project helpful, please give it a ⭐!
 
 ---
 
-👨‍💻 Author
-Mehrab Javadzadeh 
-Amirmahdi Khodabandelou
+## 👨‍💻 Author
+- Mehrab Javadzadeh 
+- Amirmahdi Khodabandelou
 
 ---
 
