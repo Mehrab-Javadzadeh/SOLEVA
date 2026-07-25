@@ -17,9 +17,11 @@
         <div class="nav-left">
             <i class="fas fa-search" id="searchIcon"></i>
         </div>
+
         <div class="nav-center">
             <img src="images/logo.png.jpg" class="logo" alt="Soleva Logo" id="themeToggle">
         </div>
+
         <div class="nav-right">
             <i class="fas fa-user" id="userIcon"></i>
             <i class="fas fa-shopping-bag" id="cartIcon"></i>
@@ -33,6 +35,7 @@
             <h2>Soleva</h2>
             <i class="fas fa-times" id="closeMenu"></i>
         </div>
+
         <div class="side-menu-body">
             <div id="menuUserStatus" class="menu-user-status">
                 <i class="fas fa-user-circle" id="menuUserIcon"></i>
@@ -41,17 +44,22 @@
                     <div id="menuUserEmail" class="menu-user-email">Not logged in</div>
                 </div>
             </div>
+
             <hr>
+
             <div class="menu-items">
                 <a href="index.html" class="menu-item">
                     <i class="fas fa-home"></i> Home
                 </a>
+
                 <a href="#" class="menu-item" id="menuAuthAction" onclick="openAuthFromMenu()">
                     <i class="fas fa-sign-in-alt"></i> <span id="menuAuthText">Login / Register</span>
                 </a>
+
                 <a href="#" class="menu-item" onclick="logoutFromMenu()" id="menuLogoutBtn" style="display: none;">
                     <i class="fas fa-sign-out-alt"></i> Logout
                 </a>
+
                 <a href="#" class="menu-item" onclick="openCartFromMenu()">
                     <i class="fas fa-shopping-bag"></i> My Orders
                 </a>
@@ -68,6 +76,7 @@
                 <p>28,000,000 T</p>
             </div>
         </a>
+
         <a href="product.html?id=shoe2" class="product-link">
             <div class="product">
                 <img src="images/shoes2.png.jpg" alt="shoe">
@@ -75,6 +84,7 @@
                 <p>14,900,000 T</p>
             </div>
         </a>
+
         <a href="product.html?id=shoe3" class="product-link">
             <div class="product">
                 <img src="images/shoes3.png.jpg" alt="shoe">
@@ -82,6 +92,7 @@
                 <p>12,900,000 T</p>
             </div>
         </a>
+
         <a href="product.html?id=shoe4" class="product-link">
             <div class="product">
                 <img src="images/shoes4.png.jpg" alt="shoe">
@@ -89,6 +100,7 @@
                 <p>6,750,000 T</p>
             </div>
         </a>
+
         <a href="product.html?id=shoe5" class="product-link">
             <div class="product">
                 <img src="images/shoes5.png.jpg" alt="shoe">
@@ -96,6 +108,7 @@
                 <p>8,500,000 T</p>
             </div>
         </a>
+
         <a href="product.html?id=shoe6" class="product-link">
             <div class="product">
                 <img src="images/shoes6.png.jpg" alt="shoe">
@@ -103,6 +116,7 @@
                 <p>12,000,000 T</p>
             </div>
         </a>
+
         <a href="product.html?id=shoe7" class="product-link">
             <div class="product">
                 <img src="images/shoes7.png.jpg" alt="shoe">
@@ -110,6 +124,7 @@
                 <p>5,200,000 T</p>
             </div>
         </a>
+
         <a href="product.html?id=shoe8" class="product-link">
             <div class="product">
                 <img src="images/shoes8.png.jpg" alt="shoe">
@@ -117,6 +132,7 @@
                 <p>5,200,000 T</p>
             </div>
         </a>
+
         <a href="product.html?id=shoe9" class="product-link">
             <div class="product">
                 <img src="images/shoes9.png.jpg" alt="shoe">
@@ -129,7 +145,7 @@
     <!-- search panel -->
     <div id="searchPage" class="search-page">
         <div class="search-header">
-            <i class="fas fa-arrow-right" id="closeSearch"></i>
+            <i class="fas fa-times" id="closeSearch"></i>
             <input type="text" id="searchInput" placeholder="Product search ..." autocomplete="off">
         </div>
         <div id="searchResults" class="search-results"></div>
@@ -190,28 +206,12 @@
                 <p class="switch-form">Don't have an account? <span onclick="toggleAuth('register')">Register</span></p>
             </div>
             <div id="profileView" class="auth-form" style="display: none;">
-                <h2>Welcome!</h2>
+                <h2>Welcome</h2>
                 <p id="userEmailDisplay"></p>
                 <button onclick="logoutUser()" class="logout-btn">Logout</button>
             </div>
         </div>
     </div>
-
-    <script>
-        // fix menu on this page
-        document.addEventListener('DOMContentLoaded', function() {
-            var menuBtn = document.getElementById('menuIcon');
-            if (menuBtn) {
-                menuBtn.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    if (typeof openMenu === 'function') {
-                        openMenu();
-                    }
-                });
-            }
-        });
-    </script>
 
 </body>
 </html>
