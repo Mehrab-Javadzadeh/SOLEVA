@@ -1711,3 +1711,10 @@ body.dark-mode .add-to-cart-btn:hover {
 .loading-text {
     margin-top: 20px;
 }
+.modal-content input:focus,
+.modal-content select:focus,
+.modal-content textarea:focus {
+    outline: 2px solid #007bff;
+    outline-offset: 2px;
+    border-color: transparent;
+}
