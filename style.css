@@ -1544,3 +1544,51 @@ body.dark-mode #productContainer button[onclick*="addToCartFromDetail"] {
 body.dark-mode #productContainer button[onclick*="addToCartFromDetail"]:hover {
     background-color: #444 !important;
 }
+
+/* Password input wrapper */
+.password-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+/* Password inputs */
+.password-input {
+    width: 100%;
+    padding-right: 45px;
+}
+
+/* Show/Hide password icon */
+.password-toggle {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #999;
+    font-size: 18px;
+}
+
+/* Hidden elements */
+.hidden {
+    display: none;
+}
+.back-link {
+    color: #fff;
+    text-decoration: none;
+}
+.product-container {
+    margin-top: 90px;
+    padding: 20px;
+    min-height: 400px;
+}
+.loading-container {
+    text-align: center;
+    margin-top: 100px;
+}
+.loading-spinner {
+    font-size: 50px;
+    color: #000;
+}
+.loading-text {
+    margin-top: 20px;
+}

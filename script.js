@@ -685,3 +685,73 @@ document.addEventListener('DOMContentLoaded', function() {
         logo.addEventListener('click', toggleTheme);
     }
 });
+// ============================================================
+// product detail functions (product.html)
+// ============================================================
+
+function loadProduct() {
+    var params = new URLSearchParams(window.location.search);
+    var productId = params.get('id');
+    var container = document.getElementById('productContainer');
+
+    if (typeof productsData === 'undefined') {
+        setTimeout(loadProduct, 100);
+        return;
+    }
+
+    if (productId && productsData[productId]) {
+        window.currentProductId = productId;
+        var p = productsData[productId];
+
+        var thumbs = '';
+        for (var i = 0; i < p.images.length; i++) {
+            thumbs += '<img src="' + p.images[i] + '" style="width:80px;height:80px;object-fit:cover;border-radius:8px;cursor:pointer;border:2px solid transparent;transition:0.3s;" onmouseover="this.style.borderColor=\'black\'" onmouseout="this.style.borderColor=\'transparent\'" onclick="document.getElementById(\'mainImage\').src=\'' + p.images[i] + '\'">';
+        }
+
+        container.innerHTML =
+            '<div style="background:#f5f5f5;padding:60px 20px 30px;text-align:center;">' +
+                '<img id="mainImage" src="' + p.images[0] + '" style="width:400px;height:400px;object-fit:cover;border-radius:15px;box-shadow:0 5px 20px rgba(0,0,0,0.2);">' +
+                '<div style="display:flex;justify-content:center;gap:15px;flex-wrap:wrap;margin-top:20px;">' + thumbs + '</div>' +
+            '</div>' +
+            '<div style="max-width:800px;margin:0 auto;padding:30px;text-align:center;">' +
+                '<h1 style="font-size:28px;margin-bottom:15px;color:#000;">' + p.name + '</h1>' +
+                '<div style="font-size:32px;font-weight:bold;color:#c62828;margin:20px 0;">' + p.price.toLocaleString() + ' T</div>' +
+                '<div style="font-size:16px;line-height:1.8;color:#111;margin:20px 0;text-align:center;">' + p.description.replace(/\//g, '<br>') + '</div>' +
+                '<div style="margin:30px 0;">' +
+                    '<label style="font-weight:bold;">Size : </label>' +
+                    '<select id="sizeSelect" style="padding:12px 20px;font-size:16px;border-radius:8px;border:1px solid #000;">' +
+                        '<option>40</option><option>41</option><option>42</option><option>43</option><option>44</option>' +
+                    '</select>' +
+                '</div>' +
+                '<button onclick="addToCartFromDetail()" style="background:black;color:white;padding:15px 40px;font-size:18px;border:none;border-radius:30px;cursor:pointer;transition:0.3s;" onmouseover="this.style.transform=\'scale(1.05)\'" onmouseout="this.style.transform=\'scale(1)\'">' +
+                    '<i class="fas fa-shopping-bag"></i> Add to Cart' +
+                '</button>' +
+            '</div>';
+    } else {
+        container.innerHTML =
+            '<div style="text-align:center;margin-top:100px;">' +
+                '<i class="fas fa-exclamation-triangle" style="font-size:80px;color:#c62828;"></i>' +
+                '<h1 style="margin-top:30px;">❌ Product Not Found</h1>' +
+                '<p style="color:#666;margin-top:20px;">The product you are looking for does not exist.</p>' +
+                '<a href="index.html" style="display:inline-block;margin-top:40px;background:black;color:white;padding:12px 30px;border-radius:30px;text-decoration:none;">← Back to Shop</a>' +
+            '</div>';
+    }
+}
+
+function addToCartFromDetail() {
+    var sizeSelect = document.getElementById('sizeSelect');
+    if (sizeSelect && window.currentProductId && typeof addToCart !== 'undefined') {
+        if (addToCart(window.currentProductId, sizeSelect.value)) {
+            alert('✅ Product added to cart');
+        }
+    } else {
+        alert('Please try again');
+    }
+}
+
+// Auto-load product when page loads (for product.html)
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', loadProduct);
+} else {
+    loadProduct();
+}

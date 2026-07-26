@@ -12,14 +12,18 @@
 </head>
 <body>
 
-    <!-- navbar -->
+    <!-- Top navigation bar -->
     <div class="top-nav">
         <div class="nav-left">
             <i class="fas fa-search" id="searchIcon"></i>
         </div>
 
         <div class="nav-center">
-            <img src="images/logo.png.jpg" class="logo" alt="Soleva Logo" id="themeToggle">
+            <img 
+                src="images/logo.png.jpg" 
+                class="logo" 
+                alt="Soleva Logo" 
+                id="themeToggle">
         </div>
 
         <div class="nav-right">
@@ -29,7 +33,7 @@
         </div>
     </div>
 
-    <!-- menu sidebar -->
+    <!-- Sidebar menu -->
     <div id="sideMenu" class="side-menu">
         <div class="side-menu-header">
             <h2>Soleva</h2>
@@ -56,7 +60,7 @@
                     <i class="fas fa-sign-in-alt"></i> <span id="menuAuthText">Login / Register</span>
                 </a>
 
-                <a href="#" class="menu-item" onclick="logoutFromMenu()" id="menuLogoutBtn" style="display: none;">
+                <a href="#" class="menu-item hidden" onclick="logoutFromMenu()" id="menuLogoutBtn">
                     <i class="fas fa-sign-out-alt"></i> Logout
                 </a>
 
@@ -67,11 +71,13 @@
         </div>
     </div>
 
-    <!-- product grid -->
+    <!-- Product list -->
     <div class="products">
         <a href="product.html?id=shoe1" class="product-link">
             <div class="product">
-                <img src="images/shoes1.png.jpg" alt="shoe">
+                <img 
+                    src="images/shoes1.png.jpg" 
+                    alt="shoe">
                 <h3>Air Jordan 1 High OG Taxi</h3>
                 <p>28,000,000 T</p>
             </div>
@@ -79,7 +85,9 @@
 
         <a href="product.html?id=shoe2" class="product-link">
             <div class="product">
-                <img src="images/shoes2.png.jpg" alt="shoe">
+                <img 
+                    src="images/shoes2.png.jpg" 
+                    alt="shoe">
                 <h3>Air Jordan 1 High OG White Cement</h3>
                 <p>14,900,000 T</p>
             </div>
@@ -87,7 +95,9 @@
 
         <a href="product.html?id=shoe3" class="product-link">
             <div class="product">
-                <img src="images/shoes3.png.jpg" alt="shoe">
+                <img 
+                    src="images/shoes3.png.jpg" 
+                    alt="shoe">
                 <h3>Jordan 1 mid Rebellionaire</h3>
                 <p>12,900,000 T</p>
             </div>
@@ -95,7 +105,9 @@
 
         <a href="product.html?id=shoe4" class="product-link">
             <div class="product">
-                <img src="images/shoes4.png.jpg" alt="shoe">
+                <img 
+                    src="images/shoes4.png.jpg" 
+                    alt="shoe">
                 <h3>Air Jordan 1 Travis Scott Black Grey</h3>
                 <p>6,750,000 T</p>
             </div>
@@ -103,7 +115,9 @@
 
         <a href="product.html?id=shoe5" class="product-link">
             <div class="product">
-                <img src="images/shoes5.png.jpg" alt="shoe">
+                <img 
+                    src="images/shoes5.png.jpg" 
+                    alt="shoe">
                 <h3>Air jordan travis scott black phantom</h3>
                 <p>8,500,000 T</p>
             </div>
@@ -111,7 +125,9 @@
 
         <a href="product.html?id=shoe6" class="product-link">
             <div class="product">
-                <img src="images/shoes6.png.jpg" alt="shoe">
+                <img 
+                    src="images/shoes6.png.jpg" 
+                    alt="shoe">
                 <h3>Air Jordan 1 Travis Scott Cold Planer</h3>
                 <p>12,000,000 T</p>
             </div>
@@ -119,7 +135,9 @@
 
         <a href="product.html?id=shoe7" class="product-link">
             <div class="product">
-                <img src="images/shoes7.png.jpg" alt="shoe">
+                <img 
+                    src="images/shoes7.png.jpg" 
+                    alt="shoe">
                 <h3>Air Force ambush phantom white</h3>
                 <p>5,200,000 T</p>
             </div>
@@ -127,7 +145,9 @@
 
         <a href="product.html?id=shoe8" class="product-link">
             <div class="product">
-                <img src="images/shoes8.png.jpg" alt="shoe">
+                <img 
+                    src="images/shoes8.png.jpg" 
+                    alt="shoe">
                 <h3>Air Force LXX vandalized</h3>
                 <p>5,200,000 T</p>
             </div>
@@ -135,14 +155,16 @@
 
         <a href="product.html?id=shoe9" class="product-link">
             <div class="product">
-                <img src="images/shoes9.png.jpg" alt="shoe">
+                <img 
+                    src="images/shoes9.png.jpg" 
+                    alt="shoe">
                 <h3>Air Force 1 undefeated beige black</h3>
                 <p>6,470,000 T</p>
             </div>
         </a>
     </div>
 
-    <!-- search panel -->
+    <!-- Search panel -->
     <div id="searchPage" class="search-page">
         <div class="search-header">
             <i class="fas fa-times" id="closeSearch"></i>
@@ -151,7 +173,7 @@
         <div id="searchResults" class="search-results"></div>
     </div>
 
-    <!-- cart panel -->
+    <!-- Shopping panel -->
     <div id="cartPage" class="cart-page">
         <div class="cart-header">
             <i class="fas fa-arrow-right" id="closeCart"></i>
@@ -164,7 +186,7 @@
         </div>
     </div>
 
-    <!-- checkout -->
+    <!-- Checkout modal -->
     <div id="checkoutModal" class="modal">
         <div class="modal-content">
             <span class="close-modal" id="closeCheckout">&times;</span>
@@ -179,7 +201,7 @@
         </div>
     </div>
 
-    <!-- login / register modal -->
+    <!-- Authentication modal -->
     <div id="authModal" class="modal">
         <div class="modal-content">
             <span class="close-modal" id="closeAuth">&times;</span>
@@ -187,25 +209,36 @@
                 <h2>Create Account</h2>
                 <div id="registerError" class="error-msg"></div>
                 <input type="email" id="regEmail" placeholder="Your Email">
-                <div style="position: relative; width: 100%;">
-                    <input type="password" id="regPassword" placeholder="Password (Min 6 characters)" style="width: 100%; padding-right: 45px;">
-                    <i class="fas fa-eye" id="toggleRegPassword" style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); cursor: pointer; color: #999; font-size: 18px;"></i>
+               <div class="password-wrapper">
+                     <input
+                         type="password"
+                         id="regPassword"
+                         class="password-input"
+                         placeholder="Password (Min 6 characters)">
+                    <i class="fas fa-eye password-toggle"
+                         id="toggleRegPassword"></i>
                 </div>
                 <button onclick="registerUser()">Register</button>
                 <p class="switch-form">Already have an account? <span onclick="toggleAuth('login')">Login</span></p>
             </div>
-            <div id="loginForm" class="auth-form" style="display: none;">
+                <div id="loginForm" class="auth-form hidden">
                 <h2>Login</h2>
                 <div id="loginError" class="error-msg"></div>
                 <input type="email" id="logEmail" placeholder="Your Email">
-                <div style="position: relative; width: 100%;">
-                    <input type="password" id="logPassword" placeholder="Password" style="width: 100%; padding-right: 45px;">
-                    <i class="fas fa-eye" id="toggleLogPassword" style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); cursor: pointer; color: #999; font-size: 18px;"></i>
+                <div class="password-wrapper">
+                    <input
+                        type="password"
+                        id="logPassword"
+                        class="password-input"
+                        placeholder="Password">
+
+                    <i class="fas fa-eye password-toggle"
+                        id="toggleLogPassword"></i>
                 </div>
                 <button onclick="loginUser()">Login</button>
                 <p class="switch-form">Don't have an account? <span onclick="toggleAuth('register')">Register</span></p>
             </div>
-            <div id="profileView" class="auth-form" style="display: none;">
+            <div id="profileView" class="auth-form hidden">
                 <h2>Welcome</h2>
                 <p id="userEmailDisplay"></p>
                 <button onclick="logoutUser()" class="logout-btn">Logout</button>
